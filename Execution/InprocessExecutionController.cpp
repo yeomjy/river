@@ -153,6 +153,16 @@ typedef void(*ExecuteFunc)(int argc, char *argv[]);
 InitializeFunc revtracerInitialize = nullptr;
 ExecuteFunc revtraceExecute = nullptr;
 
+void *allocate_memory(unsigned long size) {
+	void *addr = mmap(NULL, size, 0x7, 0x21, 0, 0);
+	if (addr == NULL)
+		DEBUG_BREAK;
+	return addr;
+}
+
+void free_memory(void *addr) {
+}
+
 bool InprocessExecutionController::Execute() {
 	revwrapper::WrapperImports wrapperImports;
 	revwrapper::WrapperExports wrapperExports;
@@ -236,10 +246,18 @@ bool InprocessExecutionController::Execute() {
 		return false;
 	}*/
 
-	revtracer.pImports->memoryAllocFunc = wrapper.pExports->allocateMemory;
-	revtracer.pImports->memoryFreeFunc = wrapper.pExports->freeMemory;
-	revtracer.pImports->lowLevel.ntTerminateProcess = (rev::ADDR_TYPE)wrapper.pExports->terminateProcess;
-	revtracer.pImports->lowLevel.vsnprintf_s = (rev::ADDR_TYPE)wrapper.pExports->formattedPrint;
+	//revtracer.pImports->memoryAllocFunc = wrapper.pExports->allocateMemory;
+	revtracer.pImports->memoryAllocFunc = allocate_memory;
+
+	//revtracer.pImports->memoryFreeFunc = wrapper.pExports->freeMemory;
+	revtracer.pImports->memoryFreeFunc = free_memory;
+
+	//revtracer.pImports->lowLevel.ntTerminateProcess = (rev::ADDR_TYPE)wrapper.pExports->terminateProcess;
+	revtracer.pImports->lowLevel.ntTerminateProcess = (rev::ADDR_TYPE) exit;
+
+	//revtracer.pImports->lowLevel.vsnprintf_s = (rev::ADDR_TYPE)wrapper.pExports->formattedPrint;
+	revtracer.pImports->lowLevel.vsnprintf_s = (rev::ADDR_TYPE)snprintf;
+
 	gfe = revtracer.pExports->getFirstEsp;
 	gcr = revtracer.pExports->getCurrentRegisters;
 	gmi = revtracer.pExports->getMemoryInfo;

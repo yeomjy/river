@@ -23,7 +23,9 @@ typedef void(*SymbolicPayloadFunc)(nodep::DWORD trackBuffer);
 nodep::DWORD BranchHandlerFunc(void *context, void *userContext, rev::ADDR_TYPE nextInstruction) {
 	ExecutionEnvironment *pEnv = (ExecutionEnvironment *)context;
 	ExecutionController *exec = (ExecutionController *)userContext;
-	rev::ADDR_TYPE termCode = exec->GetTerminationCode();
+	
+	// DE MODIFICAT??
+	rev::ADDR_TYPE termCode = NULL; //exec->GetTerminationCode();
 
 	exec->DebugPrintf(PRINT_BRANCHING_INFO, "[BranchHandler] next instr %p\n", nextInstruction);
 
