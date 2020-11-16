@@ -1,17 +1,18 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 RUN  apt-get update && \
   apt-get upgrade -y && \
-  apt-get install -y git wget sudo build-essential unzip && \
+  apt-get install -y git sudo build-essential unzip libssl-dev wget && \
   rm -rf /var/lib/apt/lists/* 
 
-# Cmake
-RUN wget https://cmake.org/files/v3.14/cmake-3.14.0.tar.gz && \
-  tar xzf cmake-3.14.0.tar.gz && \
-  cd cmake-3.14.0 && \
-  ./configure && \
+
+# cmake
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.18.4/cmake-3.18.4.tar.gz && \
+  tar -zxvf cmake-3.18.4.tar.gz && \
+  cd cmake-3.18.4 && \
+  ./bootstrap && \
   make && \
-  make install
+  make install 
 
 # Setup Triton
 
@@ -50,14 +51,6 @@ RUN apt-get update && \
   cd build && \
   cmake .. && \
   make -j2 install
-
-RUN wget https://github.com/aquynh/capstone/archive/4.0.2.zip && \
-  unzip 4.0.2.zip && \
-  rm -f 4.0.2.zip && ls && \
-  cd capstone-4.0.2 && \
-  chmod +x ./make.sh && \
-  ./make.sh && \
-  ./make.sh install 
 
 # Install LIEF
 RUN python3.6 -m pip install setuptools --upgrade && \
