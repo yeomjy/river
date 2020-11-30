@@ -16,29 +16,37 @@ SERVER_OBJECTS := $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(SERVER_SRCS))
 
 LIB_SRCS := $(wildcard $(SRC)/libriver*.c)
 LIB_OBJECTS := $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(LIB_SRCS))
+LIB_NAME=libriver.so
 
-all: $(BIN)/process-wrapper $(BIN)/server $(BIN)/libriver.so
+# Check if patchelf is installed
+PATCHELF_EXISTS=$(shell patchelf --version 2> /dev/null)
 
-$(BIN)/process-wrapper: $(CLIENT_OBJECTS)
-	test -d $(BIN) || mkdir -p $(BIN)
+all: $(BIN)/process-wrapper $(BIN)/server $(BIN)/$(LIB_NAME)
+
+$(BIN)/process-wrapper: $(CLIENT_OBJECTS) $(BIN)/$(LIB_NAME)
+	@test -d $(BIN) || mkdir -p $(BIN)
 	@#$(CC) $(CCFLAGS) $(LFLAGS) $(CLIENT_OBJECTS) -lriver -L$(BIN) -Wl,-rpath=$(BIN) -o $@
 	$(CC) $(CCFLAGS) $(LFLAGS) $(CLIENT_OBJECTS) -o $@
+ifneq (, $(PATCHELF_EXISTS))
+	$(info Patch process with custom library if patchelf is installed)
+	$(info Otherwise, LD_PRELOAD should be used to preload $(LIB_NAME))
+	patchelf --add-needed `pwd`/$(BIN)/$(LIB_NAME) $@
+endif
 
 $(BIN)/server: $(SERVER_OBJECTS)
-	test -d $(BIN) || mkdir -p $(BIN)
+	@test -d $(BIN) || mkdir -p $(BIN)
 	$(CC) $(CCFLAGS) $(LFLAGS) $^ -o $@
 
-$(BIN)/libriver.so: $(LIB_OBJECTS)
-	test -d $(BIN) || mkdir -p $(BIN)
+$(BIN)/$(LIB_NAME): $(LIB_OBJECTS)
+	@test -d $(BIN) || mkdir -p $(BIN)
 	$(CC) $(CCFLAGS) $(LFLAGS) -shared -Wl,-z,now $^ -o $@
 
 $(OBJ)/libriver.o: $(LIB_SRCS)
-	test -d $(OBJ) || mkdir -p $(OBJ)
+	@test -d $(OBJ) || mkdir -p $(OBJ)
 	$(CC) $(CCFLAGS) $(LFLAGS) -fPIC -c $< -o $@
 
 $(OBJ)/%.o: $(SRC)/%.c
-	echo $<
-	test -d $(OBJ) || mkdir -p $(OBJ)
+	@test -d $(OBJ) || mkdir -p $(OBJ)
 	$(CC) $(CCFLAGS) $(LFLAGS) -c $< -o $@
 
 clean:

@@ -24,3 +24,4 @@ make
 LD_PRELOAD=bin/libriver.so ./bin/process-wrapper
 ```
 
+**Note:** If `patchelf` is installed on the build machine, `LD_PRELOAD` isn't necessary as we use `patchelf` at build time to specify `libriver.so` as a needed library.
