@@ -10,6 +10,7 @@ import copy
 import time
 from RiverOutputStats import RiverStatsTextual
 import logging
+import requests
 
 # TODO Bogdan, replace this with the graphical interface
 # The online reconstructed graph that shows possible connections between basic blocks.
@@ -44,6 +45,8 @@ def parseArgs():
                     help="the interval (in seconds) between showing new stats", type=int)
     ap.add_argument("-outputType", "--outputType", required=False, default='textual',
                     help="the output interface type, can be visual or textual", type=str)
+    ap.add_argument("-outputEndpoint", "--outputEndpoint", required=False, default=None,
+                     help="the HTTP endpoint where test execution data will be sent")
     args = ap.parse_args()
 
     loggingLevel = logging._nameToLevel[args.logLevel]
@@ -129,7 +132,7 @@ def Expand(symbolicTracer : RiverTracer, inputToTry):
     return inputs
 
 # This function starts with a given seed dictionary and does concolic execution starting from it.
-def SearchInputs(symbolicTracer, simpleTracer, initialSeedDict, binaryPath):
+def SearchInputs(symbolicTracer, simpleTracer, initialSeedDict, binaryPath, outputEndpoint):
     # Init the worklist with the initial seed dict
     worklist  = RiverUtils.InputsWorklist()
     forceFinish = False
@@ -152,8 +155,10 @@ def SearchInputs(symbolicTracer, simpleTracer, initialSeedDict, binaryPath):
             # Execute the input to detect real issues with it
             issue = ExecuteInputToDetectIssues(binaryPath, newInp)
             if issue != None:
-                # TODO: save the input to a database
                 print(f"{binaryPath} has issues: {issue} on input {newInp}")
+                if outputEndpoint is not None:
+                    # Send the issue data to provided output endpoint
+                    SendIssueDataToEndpoint(binaryPath, issue, newInp, outputEndpoint)
                 pass
 
             # Assign this input a priority, and check if the hacked target address was found or not
@@ -175,6 +180,15 @@ def SearchInputs(symbolicTracer, simpleTracer, initialSeedDict, binaryPath):
 
     currTime = outputStats.UpdateOutputStats(startTime, currTime, collectorTracers=[simpleTracer], forceOutput=True)
 
+def SendIssueDataToEndpoint(binaryPath, issue, causal_input, endpoint):
+    payload = {
+        'binaryPath': binaryPath,
+        "issue": issue,
+        "inputBytes": list(map(lambda k: causal_input.buffer[k], sorted(causal_input.buffer)))
+    }
+    print(f"Sending payload to {endpoint}: {payload}")
+    r = requests.post(endpoint, data=payload)
+    print(r.json())
 
 def ExecuteInputToDetectIssues(binary_path, input : RiverUtils.Input):
     from bugs_detection.test_inputs import sig_str, test_input
@@ -202,7 +216,8 @@ if __name__ == '__main__':
     initialSeedDict = ["good"] # ["a<9d"]
     RiverUtils.processSeedDict(initialSeedDict) # Transform the initial seed dict to bytes instead of chars if needed
 
-    SearchInputs(symbolicTracer=symbolicTracer, simpleTracer=simpleTracer, initialSeedDict=initialSeedDict, binaryPath=args.binaryPath)
+    SearchInputs(symbolicTracer=symbolicTracer, simpleTracer=simpleTracer, initialSeedDict=initialSeedDict,
+                binaryPath=args.binaryPath, outputEndpoint=args.outputEndpoint)
 
     if RECONSTRUCT_BB_GRAPH:
         print(f"Reconstructed graph is: {BlocksGraph}")
