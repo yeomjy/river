@@ -182,13 +182,16 @@ def SearchInputs(symbolicTracer, simpleTracer, initialSeedDict, binaryPath, outp
 
 def SendIssueDataToEndpoint(binaryPath, issue, causal_input, endpoint):
     payload = {
-        'binaryPath': binaryPath,
+        "binaryPath": binaryPath,
         "issue": issue,
         "inputBytes": list(map(lambda k: causal_input.buffer[k], sorted(causal_input.buffer)))
     }
-    print(f"Sending payload to {endpoint}: {payload}")
-    r = requests.post(endpoint, data=payload)
-    print(r.json())
+    try:
+        print(f"Sending payload to '{endpoint}': {payload}")
+        r = requests.post(endpoint, json=payload)
+        print(r.json())
+    except Exception as e:
+        print(f"Error encountered while trying to send issue data to endpoint '{endpoint}': {e}")
 
 def ExecuteInputToDetectIssues(binary_path, input : RiverUtils.Input):
     from bugs_detection.test_inputs import sig_str, test_input
