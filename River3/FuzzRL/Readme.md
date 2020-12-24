@@ -1,7 +1,7 @@
 # Reinforcement learning environment for Fuzzing
 
 ## Installation:
-- This folder includes the base definitions of a RL Environment for fuzzing binary using our Tool. You have to install first the River3 then come back to this
+- This folder includes the base definitions of a RL Environment for fuzzing binary using our Tool. You have to install first the River3 (https://github.com/unibuc-cs/river/tree/master/River3) then come back to this
 - The environments are in gymEnvs and are compatible with the OpenAI Gym format !
   Currently we have two environments:
     - the base one, default: RiverBinaryFuzzerBase-v0  (used for general purpose fuzzing of binaries
@@ -35,3 +35,4 @@ The idea is this:
         
  - The implementation can be seen in testRiverGym.py script, inside testCustomPNGEnvironment function
         
+### Note: check the parameters from River3 base first, since all things above are related to it.
