@@ -10,6 +10,10 @@
 - By using a common OpenAI gym format you can either use your own algorithms to train the environments or use an external library of algorithms like we already did with TFAgents (https://www.tensorflow.org/agents). 
 - Note: the code is not tied up to Tensorflow.
 
+The overall architecture is in the picture below, where the left side is the abstract policy training mechnanisms, while the environment defintion is represented by the right side. Basically you have full control over both.
+
+![alt text](./rlfuzzarchitecture.png)
+
 ## Defaults in the base environment
   - Observations: a 2D bash of observed binary blocks (check self.obs_map), an embeedding of the last path used, a plain path of basic blocks
   - Rewards: number of different basic blocks found
