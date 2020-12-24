@@ -18,4 +18,20 @@
   - Put your own corpus in setCorpus function
 
 ## Extended environment as an example:
-  - 
+You can customize your own custom observations, actions, rewards and tokens dictionary !
+
+  - RiverBinaryCustomForLibPNGEnv implemented in fuzz_river_example.png.py contains a demonstration how to extend the base environment.
+  - Take a look at init function to see how a dictionary containing PNG tokens is added dynamically to the already existing dictionary.
+  - Take a look at how we used registerNewActionFunctor function to register a new operation called 'Shuffle'. 
+
+## Combining symbolic execution and fuzzing with RL
+
+A very good example that succedded to almost double the rewards in short time in our experiments was the combination of symbolic execution and fuzzing.
+The idea is this:
+ - When for a couple of steps (parameter) is remaining the same:
+     A. Do a symbolic execution to get the path constraints and branch points addresses along the path
+     B. If there is a chance to get to a new block that was not seen yet:
+        B1. Modify the input to get to that path at the next run
+        
+ - The implementation can be seen in testRiverGym.py script, inside testCustomPNGEnvironment function
+        
