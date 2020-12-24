@@ -40,13 +40,13 @@ CMD cd /home/circleci/river/River3/TestPrograms && \
     cd ../python && \
     python3 concolic_GenerationalSearch2.py --binaryPath "../TestPrograms/crackme_sample" \
                                             --architecture x64 \
-                                            --maxLen 1 \
+                                            --maxLen 5 \
                                             --logLevel CRITICAL \
                                             --secondsBetweenStats 10 \
                                             --outputType textual && \
     python3 concolic_RLGenerationalSearch.py --binaryPath "../TestPrograms/crackme_sample" \
                                              --architecture x64 \
-                                             --maxLen 1 \
+                                             --maxLen 5 \
                                              --logLevel CRITICAL \
                                              --secondsBetweenStats 10 \
                                              --outputType textual
