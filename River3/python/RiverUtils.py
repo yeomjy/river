@@ -33,6 +33,8 @@ def parseArgs():
                     help="path to the model to use", type=str)
     ap.add_argument("-stateful", "--stateful", required=False, default=False,
                     help="Either if stateful or stateless (default)", type=str)
+    ap.add_argument("-outputEndpoint", "--outputEndpoint", required=False, default=None,
+                     help="the HTTP endpoint where test execution data will be sent")
     #ap.add_argument("-defaultObsParams", "--defaultObsParams", required=False, default=False,
     #                help="Default Observation parameters - should be a binary string mapping in order the values from default self.observation_space", type=str)
 
