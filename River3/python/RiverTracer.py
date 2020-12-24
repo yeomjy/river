@@ -44,7 +44,7 @@ class RiverTracer:
 				symbolicVar = self.context.symbolizeMemory(MemoryAccess(byteAddr, CPUSIZE.BYTE))
 				self.symbolicVariablesCache[byteIndex] = symbolicVar
 
-		self.debugShowAllSymbolicVariables()
+		#self.debugShowAllSymbolicVariables()
 
 		assert self.resetSymbolicMemoryAtEachRun == True or len(self.symbolicVariablesCache) == self.maxInputSize
 

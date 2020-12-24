@@ -2,10 +2,6 @@ import os
 import gym
 import sys
 
-# TODO: fix this hardcoded path !!!!!!!!!!!!!!!!
-sys.path.append("/home/ciprian/Work/river/River3/python")
-
-
 """
 Optimize things
 see other params from paper
@@ -122,56 +118,4 @@ class RiverBinaryFuzzerBase(gym.Env):
 		info = {'lastPathConstraints' : lastPathConstraints,
 				'allBBsFound' : allBBsInThisRun}
 		return (obs, numNewBlocks, crashed, done, info)
-
-class RiverBinaryCustomForLibPNGEnv(RiverBinaryFuzzerBase):
-	def __init__(self, args):
-		# Set a custom tokens dictionary
-		RiverUtils.Input.tokensDictionary = \
-				[	b"\x89PNG\x0d\x0a\x1a\x0a",
-					b"IDAT",
-					b"IEND",
-					b"IHDR",
-					b"PLTE",
-					b"bKGD",
-					b"cHRM",
-					b"fRAc",
-					b"gAMA",
-					b"gIFg",
-					b"gIFt",
-					b"gIFx",
-					b"hIST",
-					b"iCCP",
-					b"iTXt",
-					b"oFFs",
-					b"pCAL",
-					b"pHYs",
-					b"sBIT",
-					b"sCAL",
-					b"sPLT",
-					b"sRGB",
-					b"sTER",
-					b"tEXt",
-					b"tIME",
-					b"tRNS",
-					b"zTXt"
-				]
-
-		# Example how to register a new action functor
-		RiverUtils.Input.registerNewActionFunctor(RiverBinaryCustomForLibPNGEnv.shuffleBytesFunctor)
-
-		# Register a map observation by default here, or do your custom one
-		# Note that if add a custom observation type, you also need to go back to fill_observation and override it to match your expectations
-		args.obs_map = 1
-		args.obs_path_stats = 0
-
-		# Then call main functionality
-		super(RiverBinaryCustomForLibPNGEnv, self).__init__(args)
-
-	# Could also derive reset and step functions !
-	# Reset the program and put it in a new input from the corpus seed
-	def reset(self):
-		return super(RiverBinaryCustomForLibPNGEnv, self).reset()
-
-	def step(self, action):
-		super(RiverBinaryCustomForLibPNGEnv, self).step(action)
 

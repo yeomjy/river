@@ -160,7 +160,7 @@ class ActionFunctors:
 
         if override is False:
             oldBuffer = inputInstance.buffer
-            inputInstance.buffer = oldBuffer[:index] + wordToAdd + oldBuffer[index:]
+            inputInstance.buffer = oldBuffer[:index] + list(wordToAdd) + oldBuffer[index:]
         else:
             inputInstance.buffer[index : (index+wordToAdd_len)] = wordToAdd
 

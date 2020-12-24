@@ -6,3 +6,8 @@ register(
     id='RiverBinaryFuzzerBase-v0',
     entry_point='gymEnvs.envs:RiverBinaryFuzzerBase',
 )
+
+register(
+    id='RiverBinaryCustomForLibPNGEnv-v0',
+    entry_point='gymEnvs.envs:RiverBinaryCustomForLibPNGEnv',
+)
