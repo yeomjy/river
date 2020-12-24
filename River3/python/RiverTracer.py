@@ -12,9 +12,11 @@ class RiverTracer:
 	# Creates the tracer either with symbolic execution enabled or not
 	# And with the given architecture
 	# if a targetToReach is used, then the emulation stops when the tracer gets to that address
-	def __init__(self, architecture, symbolized, targetAddressToReach = None):
+	def __init__(self, architecture, symbolized, maxInputSize, targetAddressToReach = None, resetSymbolicMemoryAtEachRun=True):
 		self.context = TritonContext(architecture)
 		self.symbolized = symbolized
+		self.resetSymbolicMemoryAtEachRun = resetSymbolicMemoryAtEachRun
+		self.maxInputSize = maxInputSize
 
 		if symbolized is False:
 			self.context.enableSymbolicEngine(False)
@@ -33,6 +35,22 @@ class RiverTracer:
 		self.entryFuncAddr = None # Entry function address
 		self.codeSection_begin = None # Where the code section begins and ends
 		self.codeSection_end = None
+
+		# Create the cache of symbolic variables if they are to be keep fixed.
+		self.symbolicVariablesCache = [None] * self.maxInputSize
+		if self.resetSymbolicMemoryAtEachRun == False:
+			for byteIndex in range(self.maxInputSize):
+				byteAddr = INPUT_BUFFER_ADDRESS + byteIndex
+				symbolicVar = self.context.symbolizeMemory(MemoryAccess(byteAddr, CPUSIZE.BYTE))
+				self.symbolicVariablesCache[byteIndex] = symbolicVar
+
+		self.debugShowAllSymbolicVariables()
+
+		assert self.resetSymbolicMemoryAtEachRun == True or len(self.symbolicVariablesCache) == self.maxInputSize
+
+
+	def resetPersistentState(self):
+		self.allBlocksFound = set()
 
 	# Gets the context of this tracer
 	def getContext(self):
@@ -99,27 +117,63 @@ class RiverTracer:
 			basicBlocksPathFoundThisRun = basicBlocksPathFoundThisRun[:-1]
 		return targetAddressFound, numNewBasicBlocks, basicBlocksPathFoundThisRun
 
+	def debugShowAllSymbolicVariables(self):
+		allSymbolicVariables = self.context.getSymbolicVariables()
+		print(f"All symbolic variables: {allSymbolicVariables}")
+
+		for k, v in sorted(self.context.getSymbolicVariables().items()):
+			print(k, v)
+			varValue = self.context.getConcreteVariableValue(v)
+			print(f"Var id {k} name and size: {v} = {varValue}")
+
 	# This function initializes the context memory for further emulation
 	def __initContext(self, inputToTry: RiverUtils.Input, symbolized: bool):
 		assert (self.context.isSymbolicEngineEnabled() == symbolized or symbolized == False), "Making sure that context has exactly the matching requirements for the call, nothing more, nothing less"
 
 		# Clean symbolic state
-		if symbolized:
+		if symbolized and self.resetSymbolicMemoryAtEachRun:
 			self.context.concretizeAllRegister()
 			self.context.concretizeAllMemory()
 
+		# Byte level
 		def symbolizeAndConcretizeByteIndex(byteIndex, value, symbolized):
 			byteAddr = INPUT_BUFFER_ADDRESS + byteIndex
 			self.context.setConcreteMemoryValue(byteAddr, value)
 
 			if symbolized:
-				self.context.symbolizeMemory(MemoryAccess(byteAddr, CPUSIZE.BYTE))
+				# If not needed to reset symbolic state, just take the variable from the cache store and set its current value
+				if self.resetSymbolicMemoryAtEachRun:
+					self.context.symbolizeMemory(MemoryAccess(byteAddr, CPUSIZE.BYTE))
+				else:
+					self.context.setConcreteVariableValue(self.symbolicVariablesCache[byteIndex], value)
+
+		# Continuous area level
+		def symbolizeAndConcretizeArea(addr, values):
+			self.context.setConcreteMemoryAreaValue(addr, values)
+			if symbolized:
+				for byteIndex, value in enumerate(values):
+					byteAddr = INPUT_BUFFER_ADDRESS + byteIndex
+
+					# If not needed to reset symbolic state, just take the variable from the cache store and set its current value
+					if True or self.resetSymbolicMemoryAtEachRun:
+						self.context.symbolizeMemory(MemoryAccess(byteAddr, CPUSIZE.BYTE))
+						#self.debugShowAllSymbolicVariables()
+					else:
+						#self.debugShowAllSymbolicVariables()
+						self.context.setConcreteVariableValue(self.symbolicVariablesCache[byteIndex], value)
 
 		# Symbolize the input bytes in the input seed.
 		# Put all the inputs in the buffer in the emulated program memory
-		inputLen = max(inputToTry.buffer.keys()) + 1
-		for byteIndex, value in inputToTry.buffer.items():
-			symbolizeAndConcretizeByteIndex(byteIndex, value, symbolized)
+		if inputToTry.usePlainBuffer == True:
+			assert isinstance(inputToTry.buffer, list), "The input expected to be a series of bytes in a list "
+			inputLen = len(inputToTry.buffer)
+			symbolizeAndConcretizeArea(INPUT_BUFFER_ADDRESS, inputToTry.buffer)
+			#for byteIndex, value in enumerate(inputToTry.buffer):
+			#	symbolizeAndConcretizeByteIndex(byteIndex, value, symbolized)
+		else:
+			inputLen = max(inputToTry.buffer.keys()) + 1
+			for byteIndex, value in inputToTry.buffer.items():
+				symbolizeAndConcretizeByteIndex(byteIndex, value, symbolized)
 
 		if symbolized:
 			# Put the last bytes as fake sentinel inputs to promote some usages detection outside buffer
@@ -210,7 +264,12 @@ class RiverTracer:
 				vaddr = phdr.virtual_address
 				logging.info('[+] Loading 0x%06x - 0x%06x' % (vaddr, vaddr + size))
 				tracersInstances[tracerIndex].context.setConcreteMemoryAreaValue(vaddr, phdr.content)
+				#assert False, "Check where is stack and heap and reset them "
 
 	def throwStats(self, target):
 		target.onAddNewStatsFromTracer(self.allBlocksFound)
 		self.allBlocksFound.clear()
+
+	def ResetMem(self):
+		# TODO
+		pass

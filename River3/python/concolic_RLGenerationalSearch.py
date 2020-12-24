@@ -28,56 +28,6 @@ def onEdgeDetected(fromAddr, toAddr):
         BlocksGraph[fromAddr] = set()
     BlocksGraph[fromAddr].add(toAddr)
 
-def parseArgs():
-    # Construct the argument parser
-    ap = argparse.ArgumentParser()
-
-    # Add the arguments to the parser
-    ap.add_argument("-bp", "--binaryPath", required=True,
-                    help="the test binary location")
-    ap.add_argument("-entryfuncName", "--entryfuncName", required=False, default="RIVERTestOneInput",
-                    help="the name of the entry function you want to start the test from. By default the function name is 'RIVERTestOneInput'!", type=str)
-    ap.add_argument("-arch", "--architecture", required=True,
-                    help="architecture of the executable: ARM32, ARM64, X86, X64 are supported")
-    ap.add_argument("-max", "--maxLen", required=True,
-                    help="maximum size of input length", type=int)
-    ap.add_argument("-targetAddress", "--targetAddress", required=False, default=None,
-                    help="the target address that your program is trying to reach", type=str)
-    ap.add_argument("-logLevel", "--logLevel", required=False, default='CRITICAL',
-                    help="set the log level threshold, see the Python logging module documentation for the list of levels. Set it to DEBUG to see everything!", type=str)
-    ap.add_argument("-secondsBetweenStats", "--secondsBetweenStats", required=False, default='10',
-                    help="the interval (in seconds) between showing new stats", type=int)
-    ap.add_argument("-outputType", "--outputType", required=False, default='textual',
-                    help="the output interface type, can be visual or textual", type=str)
-    ap.add_argument("-isTraining", "--isTraining", required=False, default=0,
-                    help="set it to 1 if using an untrained model or to 0 if using a saved model", type=int)
-    ap.add_argument("-pathToModel", "--pathToModel", required=False, default=None, 
-                    help="path to the model to use", type=str)
-
-    args = ap.parse_args()
-
-    loggingLevel = logging._nameToLevel[args.logLevel]
-    logging.basicConfig(level=loggingLevel)  # filename='example.log', # Set DEBUG or INFO if you want to see more
-
-    SECONDS_BETWEEN_STATS = args.secondsBetweenStats
-
-    args.targetAddress = None if args.targetAddress is None else int(args.targetAddress, 16)
-
-    # Set the architecture
-    if args.architecture == "ARM32":
-        args.architecture = ARCH.ARM32
-    elif args.architecture == "ARM64":
-        args.achitecture = ARCH.X86_64
-    elif args.architecture == "x86":
-        args.architecture = ARCH.X86
-    elif args.architecture == "x64":
-        args.architecture = ARCH.X86_64
-    else:
-        assert False, "This architecture is not implemented"
-        raise NotImplementedError
-
-    return args
-
 # This function returns a set of new inputs based on the last trace.
 def Expand(symbolicTracer : RiverTracer, inputToTry):
     logging.info(f"Seed injected:, {inputToTry}")
@@ -244,11 +194,11 @@ def ScoreInput(newInp : RiverUtils.Input, symbolicTracer : RiverTracer, simpleTr
 
 if __name__ == '__main__':
 
-    args = parseArgs()
+    args = RiverUtils.parseArgs()
 
     # Create two tracers : one symbolic used for detecting path constraints etc, and another one less heavy used only for tracing and scoring purpose
-    symbolicTracer  = RiverTracer(symbolized=True,  architecture=args.architecture, targetAddressToReach=args.targetAddress)
-    simpleTracer    = RiverTracer(symbolized=True, architecture=args.architecture, targetAddressToReach=args.targetAddress)
+    symbolicTracer  = RiverTracer(symbolized=True,  architecture=args.architecture, maxInputSize=args.maxLen, targetAddressToReach=args.targetAddress)
+    simpleTracer    = RiverTracer(symbolized=True, architecture=args.architecture, maxInputSize=args.maxLen, targetAddressToReach=args.targetAddress)
 
     # Load the binary info into the given list of tracers. We do this strage API to load only once the binary...
     RiverTracer.loadBinary([symbolicTracer, simpleTracer], args.binaryPath, args.entryfuncName)

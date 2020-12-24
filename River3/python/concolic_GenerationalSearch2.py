@@ -207,8 +207,8 @@ if __name__ == '__main__':
     args = parseArgs()
 
     # Create two tracers : one symbolic used for detecting path constraints etc, and another one less heavy used only for tracing and scoring purpose
-    symbolicTracer  = RiverTracer(symbolized=True,  architecture=args.architecture, targetAddressToReach=args.targetAddress)
-    simpleTracer    = RiverTracer(symbolized=True, architecture=args.architecture, targetAddressToReach=args.targetAddress)
+    symbolicTracer  = RiverTracer(symbolized=True,  architecture=args.architecture, maxInputSize=args.maxLen, targetAddressToReach=args.targetAddress)
+    simpleTracer    = RiverTracer(symbolized=True, architecture=args.architecture, maxInputSize=args.maxLen, targetAddressToReach=args.targetAddress)
 
     # Load the binary info into the given list of tracers. We do this strage API to load only once the binary...
     RiverTracer.loadBinary([symbolicTracer, simpleTracer], args.binaryPath, args.entryfuncName)
