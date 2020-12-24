@@ -130,6 +130,8 @@ class RiverTracer:
 	def __initContext(self, inputToTry: RiverUtils.Input, symbolized: bool):
 		assert (self.context.isSymbolicEngineEnabled() == symbolized or symbolized == False), "Making sure that context has exactly the matching requirements for the call, nothing more, nothing less"
 
+		inputToTry.sanityCheck()
+
 		# Clean symbolic state
 		if symbolized and self.resetSymbolicMemoryAtEachRun:
 			self.context.concretizeAllRegister()

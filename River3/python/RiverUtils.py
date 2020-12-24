@@ -64,6 +64,8 @@ def parseArgs():
         assert False, "This architecture is not implemented"
         raise NotImplementedError
 
+    Input.MAX_LEN = args.maxLen
+
     return args
 
 class ActionFunctors:
@@ -137,6 +139,7 @@ class ActionFunctors:
         else:
             inputInstance.buffer = bytesToAdd
 
+        inputInstance.checkTrimSize()
         return True
 
     # See below to check the significance of params
@@ -167,6 +170,8 @@ class ActionFunctors:
             inputInstance.buffer = oldBuffer[:index] + list(wordToAdd) + oldBuffer[index:]
         else:
             inputInstance.buffer[index : (index+wordToAdd_len)] = wordToAdd
+
+        inputInstance.checkTrimSize()
 
         return True
 
@@ -207,7 +212,9 @@ class Input:
     def applyAction(self, actionIndex : int, actionContext : any):
         functorForAction = Input.actionFunctors.get(actionIndex)
         assert functorForAction, f"The requested action {actionIndex} is not availble in the actions set !"
-        return functorForAction(actionContext)
+        res =  functorForAction(actionContext)
+        self.sanityCheck()
+        return res
 
     # Static functors to apply action over the existing input
     # TODO: implement all others from https://arxiv.org/pdf/1807.07490.pdf
@@ -220,6 +227,18 @@ class Input:
     tokensDictionary = []
 
     NO_ACTION_INDEX = -1
+    MAX_LEN = None # Will be set by user parameters
+
+    def sanityCheck(self):
+        #print(len(self.buffer))
+        #return
+        # Check 1: is input size in the desired range ?
+        assert len(self.buffer) <= Input.MAX_LEN, f"Input obtained is bigger than the maximum length !! Max size set in params was {Input.MAX_LEN} while buffer has currently size {len(self.buffer)}"
+
+    # Trim if too big
+    def checkTrimSize(self):
+        if len(self.buffer) > Input.MAX_LEN:
+            self.buffer = self.buffer[:Input.MAX_LEN]
 
     @staticmethod
     def getNumActionFunctors():
