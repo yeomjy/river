@@ -76,7 +76,7 @@ $ python3
 >>> import numpy
 ```
 
-# Testing
+# Core tool Testing
 
 Currently we have implemented as a proof of concept a Generic Concolic Executor and Generational Search (SAGE), the first open-source version (see the original paper [here](https://patricegodefroid.github.io/public_psfiles/cacm2012.pdf)) that can be found in `River3/python`.
 
@@ -96,7 +96,7 @@ $ gcc -g -O0 -o crackme_xor crackme_xor.c
 They can be used for debugging and understanding the asm code without optimizations.
 
 
-## How to use the Concolic (SAGE-like) tool?
+# How to use the Concolic (SAGE-like) tool?
 
 In order to see the parameters supported by the script and how to use them, you can run:
 ```
@@ -111,7 +111,7 @@ $ cd path/to/river/River3/python
 $ python3 concolic_GenerationalSearch2.py \
 	--binaryPath ../TestPrograms/crackme_xor \
 	--architecture x64 \
-	--maxLen 1 \
+	--maxLen 5 \
 	--targetAddress 0x11d3 \
 	--logLevel CRITICAL \
 	--secondsBetweenStats 10 \
@@ -140,7 +140,10 @@ The example bellow sets `main` as the entrypoint:
 ```
 ---
 
-## How to use the Reinforcement-Learning-based Concolic tool?
+# How to use Reinforcement-Learning for general purpose fuzzing combined with symbolic execution ? 
+Check the folder inside this branch: https://github.com/unibuc-cs/river/tree/master/River3/FuzzRL
+
+# How to use the Reinforcement-Learning-based Concolic tool?
 
 **NOTE:** Our implementation is done using Tensorflow 2 (2.3 version was tested). 
 You can manually modify the parameters of the model from `River3/python/RLConcolicModelTf.py`.
@@ -151,7 +154,7 @@ for the binary `River3/TestPrograms/crackme_xor`:
 $ python3 concolic_RLGenerationalSearch.py \
 	--binaryPath ../TestPrograms/crackme_xor \
 	--architecture x64 \
-	--maxLen 1 \
+	--maxLen 5 \
 	--targetAddress 0x11d3 \
 	--logLevel CRITICAL \
 	--secondsBetweenStats 10 \
@@ -160,7 +163,7 @@ $ python3 concolic_RLGenerationalSearch.py \
 
 The parameters have the same description as above. 
 
-## Testing using `docker`
+# Testing using `docker`
 
 We also provide a `Dockerfile` that builds an image with all the required dependencies and the latest `river` flavour.
 The `Dockerfile` can be found in the `docker/` folder.
@@ -204,6 +207,16 @@ To delete the container and local image crated, run:
 ```
 $ make clean
 ```
+
+# Performance aspects:
+ - If you know the limit of your input put it as maxLen. We'll optimize things behind based on this. Putting a much larger value that needed is demetrial to performance
+ - If your input is huge and can be constantly changed in large chuncks (e.g. shifting, adding, erasing bytes in the middle), use option usePlainBuffer=True when declaring your buffer ! By default it is false, which means that we consider sparse changes over existing input but there are cases such as image inputs or text when the input is not sparse. 
+ TODO: should we change default to True ??
+ 
+ - Work in progress: Currently we have a performance loss because we symbolize the memory at each step but this is not really needed. We could symbolize the memory variables once on the input then keep it like this, only changing memory references. I've opened a github issue here because Triton doesn't allow us to do this, check it here: https://github.com/JonathanSalwan/Triton/issues/976
+ 
+# Debugging aspects:
+ - Sometimes it is usefull to see which variables from the input are symbolized and which are alive. Check Tracer.debugShowAllSymbolicVariables function in RiverTracer.py for this purpose.
 
 # Future Work
  - Output graphics
