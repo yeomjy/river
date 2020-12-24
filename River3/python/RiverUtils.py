@@ -85,6 +85,7 @@ class ActionFunctors:
             indexToChange = np.random.choice(len(inputInstance.buffer))
 
         inputInstance.buffer[indexToChange] = valueToChange
+        return True
 
     # Erase one or more bytes from a given position
     @staticmethod
@@ -107,6 +108,7 @@ class ActionFunctors:
 
         assert isinstance(inputInstance.buffer, Dict) == False, "Dict kind of buffer not supported for now!"
         inputInstance.buffer[indexToStartChange : (indexToStartChange+maxLenToDelete)] = []
+        return True
 
     # Insert one or more bytes at a given position
     @staticmethod
@@ -134,6 +136,8 @@ class ActionFunctors:
             inputInstance.buffer = oldBuffer[:index] + bytesToAdd + oldBuffer[index:]
         else:
             inputInstance.buffer = bytesToAdd
+
+        return True
 
     # See below to check the significance of params
     @staticmethod
@@ -163,6 +167,8 @@ class ActionFunctors:
             inputInstance.buffer = oldBuffer[:index] + list(wordToAdd) + oldBuffer[index:]
         else:
             inputInstance.buffer[index : (index+wordToAdd_len)] = wordToAdd
+
+        return True
 
 
 #  Data structures  to hold inputs
@@ -212,6 +218,8 @@ class Input:
                       3: ActionFunctors.AddDictionaryWord}
 
     tokensDictionary = []
+
+    NO_ACTION_INDEX = -1
 
     @staticmethod
     def getNumActionFunctors():

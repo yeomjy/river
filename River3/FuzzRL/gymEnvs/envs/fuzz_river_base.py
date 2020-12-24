@@ -18,6 +18,7 @@ from RiverOutputStats import RiverStatsTextual
 import RiverUtils
 import numpy as np
 from gym import spaces
+import copy
 
 OBS_MAP_EDGESIZE = 256 # For 2d map of block addresses
 OBS_MAX_PATH_LEN = 128 # Maximum path len to be returned
@@ -36,7 +37,7 @@ class RiverBinaryFuzzerBase(gym.Env):
 		# All possible observations from last run
 		# --------------------
 		# The map hash
-		self.obs_map = np.zeros(shape=(OBS_MAP_EDGESIZE, OBS_MAP_EDGESIZE))
+		self.obs_map = np.zeros(shape=(OBS_MAP_EDGESIZE, OBS_MAP_EDGESIZE), dtype=np.int32) # Number of time each hashed block was found
 		# The last path through the program - a list of basic block addresses from the program evaluation
 		self.obs_path = None
 		# Last run as above but in format {basic blocks : how many times}
@@ -64,10 +65,57 @@ class RiverBinaryFuzzerBase(gym.Env):
 		self.action_space = spaces.Tuple((spaces.Discrete(RiverUtils.Input.getNumActionFunctors()),
 										 spaces.Dict({'isSymbolic' : spaces.Discrete(2)})))
 
+	def resetTracerSymbolicState(self):
+		self.tracer.resetLastRunPathConstraints()
+
+	# This function will try to take the path constraints and modify the current input buffer in place
+	# Such that at the next iteration if the same buffer is kept, it should to a new undisovered path yet
+	# However, note that
+	def symbolicTakeUntakenBranch(self, PathConstraints):
+		# Get the astContext
+		astCtxt = self.tracer.getAstContext()
+
+		succeeded = False
+
+		# This represents the current path constraint, dummy initialization
+		currentPathConstraint = astCtxt.equal(astCtxt.bvtrue(), astCtxt.bvtrue())
+
+		# Go through the path constraints from bound of the input (to prevent backtracking as described in the paper)
+		PCLen = len(PathConstraints)
+		for pcIndex in range(PCLen):
+			pc = PathConstraints[pcIndex]
+
+			# Get all branches
+			branches = pc.getBranchConstraints()
+
+			# If there is a condition on this path (not a direct jump), try to reverse it with a new input
+			if pc.isMultipleBranches():
+				takenAddress = pc.getTakenAddress()
+				for branch in branches:
+					# Get the constraint of the branch which has been not taken
+					branchTargetAddress = branch['dstAddr']
+					if  (branchTargetAddress!= takenAddress) and (branchTargetAddress not in self.tracer.allBlocksFound):
+						# Check if we can change current executed path with the branch changed
+						desiredConstrain = astCtxt.land([currentPathConstraint, branch['constraint']])
+						changes = self.tracer.solveInputChangesForPath(desiredConstrain)
+
+						if changes:
+							self.input.applyChanges(changes)
+							succeeded = True
+							break
+
+				if succeeded:
+					break
+
+			# Update the previous constraints with taken(true) branch to keep the same path initially taken
+			currentPathConstraint = astCtxt.land([currentPathConstraint, pc.getTakenPredicate()])
+
+		return succeeded
+
 	def _runCurrentInput(self, isSymbolic=False):
 		crashed = 0 # TODO: fix this
-		lastPathConstraints = self.tracer.getLastRunPathConstraints()
 		targetFound, numNewBlocks, allBBsInThisRun = self.tracer.runInput(self.input, symbolized=isSymbolic, countBBlocks=True)
+		lastPathConstraints = self.tracer.getLastRunPathConstraints()
 		return numNewBlocks, crashed, lastPathConstraints, allBBsInThisRun
 
 	def setCorpusSeed(self, path):
@@ -83,6 +131,18 @@ class RiverBinaryFuzzerBase(gym.Env):
 		obs['obs_path_stats'] = self.obs_path_stats
 		obs['obs_embedding'] = self.obs_embedding
 		return obs
+
+	def updateObservation(self, info):
+		lastPathConstraints = info['lastPathConstraints']
+		allBBsInThisRun = info['allBBsFound']
+
+		# Update only the 2D map for now, user is free to override and do its own observations here as he wants !
+		for blockAddr in allBBsInThisRun:
+			blockAddrInt = int(blockAddr)
+			blockHashRow = (blockAddrInt // OBS_MAP_EDGESIZE) % OBS_MAP_EDGESIZE
+			blockHashCol = blockAddrInt % OBS_MAP_EDGESIZE
+
+			self.obs_map[blockHashRow][blockHashCol] += 1
 
 	# Reset the program and put it in a new input from the corpus seed
 	def reset(self):
@@ -107,15 +167,21 @@ class RiverBinaryFuzzerBase(gym.Env):
 			self.tracer.ResetMem()
 
 		# First, apply the action given to the input buffer
-		succeeded = self.input.applyAction(actionIndex, params)
+		succeeded = False
+		if actionIndex != RiverUtils.Input.NO_ACTION_INDEX:
+			succeeded = self.input.applyAction(actionIndex, params)
 
-		# Then give it to the fuzzer to run it
-		numNewBlocks, crashed, lastPathConstraints, allBBsInThisRun = self._runCurrentInput(isSymbolic=params['isSymbolic'])
+		# Then give it to the fuzzer to run it if we applied the action
+		if succeeded or actionIndex == RiverUtils.Input.NO_ACTION_INDEX:
+			numNewBlocks, crashed, lastPathConstraints, allBBsInThisRun = self._runCurrentInput(isSymbolic=params['isSymbolic'])
+		else:
+			numNewBlocks, crashed, lastPathConstraints, allBBsInThisRun = 0, 0, [], []
 
 		# Return (obs, reward, done, info)
 		obs = self.fill_observation()
 		done = crashed
 		info = {'lastPathConstraints' : lastPathConstraints,
 				'allBBsFound' : allBBsInThisRun}
+		self.updateObservation(info)
 		return (obs, numNewBlocks, crashed, done, info)
 
