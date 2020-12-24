@@ -210,8 +210,10 @@ $ make clean
 
 # Performance aspects:
  - If you know the limit of your input put it as maxLen. We'll optimize things behind based on this. Putting a much larger value that needed is demetrial to performance
- - If your input is huge and can be constantly changed in large chuncks (e.g. shifting, adding, erasing bytes in the middle), use option usePlainBuffer=True when declaring your buffer ! By default it is false, which means that we consider sparse changes over existing input but there are cases such as image inputs or text when the input is not sparse. TODO: should we change default to True ??
- - Work in progress: Currently we have a performance loss because we symbolize the memory at each step but this is not really needed. We could symbolize the memory variables once on the input then keep it like this, only changing memory references. I've opened a github issue here because Triton doesn't allow us to do this, check it here: XXXX
+ - If your input is huge and can be constantly changed in large chuncks (e.g. shifting, adding, erasing bytes in the middle), use option usePlainBuffer=True when declaring your buffer ! By default it is false, which means that we consider sparse changes over existing input but there are cases such as image inputs or text when the input is not sparse. 
+ TODO: should we change default to True ??
+ 
+ - Work in progress: Currently we have a performance loss because we symbolize the memory at each step but this is not really needed. We could symbolize the memory variables once on the input then keep it like this, only changing memory references. I've opened a github issue here because Triton doesn't allow us to do this, check it here: https://github.com/JonathanSalwan/Triton/issues/976
  
 # Debugging aspects:
  - Sometimes it is usefull to see which variables from the input are symbolized and which are alive. Check Tracer.debugShowAllSymbolicVariables function in RiverTracer.py for this purpose.
