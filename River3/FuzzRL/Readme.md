@@ -29,9 +29,11 @@ You can customize your own custom observations, actions, rewards and tokens dict
 A very good example that succedded to almost double the rewards in short time in our experiments was the combination of symbolic execution and fuzzing.
 The idea is this:
  - When for a couple of steps (parameter) is remaining the same:
+    ```
      A. Do a symbolic execution to get the path constraints and branch points addresses along the path
      B. If there is a chance to get to a new block that was not seen yet:
         B1. Modify the input to get to that path at the next run
+    ```
         
  - The implementation can be seen in testRiverGym.py script, inside testCustomPNGEnvironment function
         
