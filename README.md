@@ -76,7 +76,7 @@ $ python3
 >>> import numpy
 ```
 
-# Testing
+# Core tool Testing
 
 Currently we have implemented as a proof of concept a Generic Concolic Executor and Generational Search (SAGE), the first open-source version (see the original paper [here](https://patricegodefroid.github.io/public_psfiles/cacm2012.pdf)) that can be found in `River3/python`.
 
@@ -96,7 +96,7 @@ $ gcc -g -O0 -o crackme_xor crackme_xor.c
 They can be used for debugging and understanding the asm code without optimizations.
 
 
-## How to use the Concolic (SAGE-like) tool?
+# How to use the Concolic (SAGE-like) tool?
 
 In order to see the parameters supported by the script and how to use them, you can run:
 ```
@@ -140,7 +140,10 @@ The example bellow sets `main` as the entrypoint:
 ```
 ---
 
-## How to use the Reinforcement-Learning-based Concolic tool?
+# How to use Reinforcement-Learning for general purpose fuzzing combined with symbolic execution ? 
+Check the folder inside this branch: https://github.com/unibuc-cs/river/tree/master/River3/FuzzRL
+
+# How to use the Reinforcement-Learning-based Concolic tool?
 
 **NOTE:** Our implementation is done using Tensorflow 2 (2.3 version was tested). 
 You can manually modify the parameters of the model from `River3/python/RLConcolicModelTf.py`.
