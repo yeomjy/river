@@ -6,6 +6,9 @@ import logging
 import argparse
 from triton import TritonContext, ARCH, Instruction, MemoryAccess, CPUSIZE, MODE
 
+# Put the last bytes as fake sentinel inputs to promote some usages detection outside buffer
+SENTINEL_SIZE = 4
+
 def parseArgs():
     # Construct the argument parser
     ap = argparse.ArgumentParser()

@@ -2,6 +2,7 @@ from __future__ import print_function
 from triton     import TritonContext, ARCH, Instruction, MemoryAccess, CPUSIZE, MODE
 import  sys
 import argparse
+import RiverUtils
 
 import logging
 logging.basicConfig(level=logging.DEBUG) # filename='example.log', # Set DEBUG or INFO if you want to see more
@@ -82,10 +83,8 @@ def initContext(ctx, seed):
     # Symbolize the inputs in the seed.
     # Todo: do the proper buffer version
     seed = seed.copy()
-    # Put the last bytes as fake sentinel inputs to promote some usages detection outside buffer
-    SENTINEL_SIZE = 4
     inputLen = max(seed.keys()) + 1
-    for sentinelByteIndex in range(inputLen, inputLen + SENTINEL_SIZE):
+    for sentinelByteIndex in range(inputLen, inputLen + RiverUtils.SENTINEL_SIZE):
         seed[sentinelByteIndex] = 0
 
     inputLen = max(seed.keys()) + 1
@@ -187,7 +186,7 @@ def loadBinary(ctx, path):
 
 if __name__ == '__main__':
 
-    args = parseArgs()
+    args = RiverUtils.parseArgs()
 
     ctx = TritonContext(args.architecture)
 

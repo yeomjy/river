@@ -12,10 +12,10 @@ class RiverTracer:
 	# Creates the tracer either with symbolic execution enabled or not
 	# And with the given architecture
 	# if a targetToReach is used, then the emulation stops when the tracer gets to that address
-	def __init__(self, architecture, symbolized, maxInputSize, targetAddressToReach = None, resetSymbolicMemoryAtEachRun=True):
+	def __init__(self, architecture, symbolized, maxInputSize, targetAddressToReach = None):
 		self.context = TritonContext(architecture)
 		self.symbolized = symbolized
-		self.resetSymbolicMemoryAtEachRun = resetSymbolicMemoryAtEachRun
+		self.resetSymbolicMemoryAtEachRun = False # KEEP IT FALSE OR TELL CPADURARU WHY YOU DO OTHERWISE
 		self.maxInputSize = maxInputSize
 
 		if symbolized is False:
@@ -37,16 +37,17 @@ class RiverTracer:
 		self.codeSection_end = None
 
 		# Create the cache of symbolic variables if they are to be keep fixed.
-		self.symbolicVariablesCache = [None] * self.maxInputSize
+		inputMaxLenPlusSentinelSize = self.maxInputSize + RiverUtils.SENTINEL_SIZE
+		self.symbolicVariablesCache = [None] * inputMaxLenPlusSentinelSize
 		if self.resetSymbolicMemoryAtEachRun == False:
-			for byteIndex in range(self.maxInputSize):
+			for byteIndex in range(inputMaxLenPlusSentinelSize):
 				byteAddr = INPUT_BUFFER_ADDRESS + byteIndex
 				symbolicVar = self.context.symbolizeMemory(MemoryAccess(byteAddr, CPUSIZE.BYTE))
 				self.symbolicVariablesCache[byteIndex] = symbolicVar
 
 		#self.debugShowAllSymbolicVariables()
 
-		assert self.resetSymbolicMemoryAtEachRun == True or len(self.symbolicVariablesCache) == self.maxInputSize
+		assert self.resetSymbolicMemoryAtEachRun == True or len(self.symbolicVariablesCache) == inputMaxLenPlusSentinelSize
 
 
 	def resetPersistentState(self):
@@ -140,29 +141,32 @@ class RiverTracer:
 		# Byte level
 		def symbolizeAndConcretizeByteIndex(byteIndex, value, symbolized):
 			byteAddr = INPUT_BUFFER_ADDRESS + byteIndex
-			self.context.setConcreteMemoryValue(byteAddr, value)
 
 			if symbolized:
 				# If not needed to reset symbolic state, just take the variable from the cache store and set its current value
-				if self.resetSymbolicMemoryAtEachRun:
+				if self.resetSymbolicMemoryAtEachRun: # Not used anymore
+					self.context.setConcreteMemoryValue(byteAddr, value)
 					self.context.symbolizeMemory(MemoryAccess(byteAddr, CPUSIZE.BYTE))
 				else:
 					self.context.setConcreteVariableValue(self.symbolicVariablesCache[byteIndex], value)
+					assert self.context.getConcreteMemoryValue(MemoryAccess(byteAddr, CPUSIZE.BYTE)) == value
 
 		# Continuous area level
 		def symbolizeAndConcretizeArea(addr, values):
-			self.context.setConcreteMemoryAreaValue(addr, values)
 			if symbolized:
-				for byteIndex, value in enumerate(values):
-					byteAddr = INPUT_BUFFER_ADDRESS + byteIndex
-
-					# If not needed to reset symbolic state, just take the variable from the cache store and set its current value
-					if True or self.resetSymbolicMemoryAtEachRun:
+				if self.resetSymbolicMemoryAtEachRun: # Not used anymore
+					self.context.setConcreteMemoryAreaValue(addr, values)
+					for byteIndex, value in enumerate(values):
+						byteAddr = INPUT_BUFFER_ADDRESS + byteIndex
 						self.context.symbolizeMemory(MemoryAccess(byteAddr, CPUSIZE.BYTE))
-						#self.debugShowAllSymbolicVariables()
-					else:
-						#self.debugShowAllSymbolicVariables()
+				else:
+					# If not needed to reset symbolic state, just take the variable from the cache store and set its current value
+					# This will update both the symbolic state and concrete memory
+					for byteIndex, value in enumerate(values):
+						byteAddr = INPUT_BUFFER_ADDRESS + byteIndex
 						self.context.setConcreteVariableValue(self.symbolicVariablesCache[byteIndex], value)
+						#assert self.context.getConcreteMemoryValue(MemoryAccess(byteAddr, CPUSIZE.BYTE)) == value
+
 
 		# Symbolize the input bytes in the input seed.
 		# Put all the inputs in the buffer in the emulated program memory
@@ -178,9 +182,7 @@ class RiverTracer:
 				symbolizeAndConcretizeByteIndex(byteIndex, value, symbolized)
 
 		if symbolized:
-			# Put the last bytes as fake sentinel inputs to promote some usages detection outside buffer
-			SENTINEL_SIZE = 4
-			for sentinelByteIndex in range(inputLen, inputLen + SENTINEL_SIZE):
+			for sentinelByteIndex in range(inputLen, inputLen + RiverUtils.SENTINEL_SIZE):
 				symbolizeAndConcretizeByteIndex(sentinelByteIndex, 0, symbolized)
 
 		# The commented version is the generic one if using a plain buffer and no dict

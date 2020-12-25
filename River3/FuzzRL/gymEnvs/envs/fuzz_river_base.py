@@ -31,7 +31,7 @@ class RiverBinaryFuzzerBase(gym.Env):
 		# TODO: how do we deal with this ?
 		# Create two tracers : one symbolic used for detecting path constraints etc, and another one less heavy used only for tracing and scoring purpose
 		self.tracer = RiverTracer(symbolized=True, architecture=args.architecture, maxInputSize=args.maxLen,
-								  targetAddressToReach=args.targetAddress, resetSymbolicMemoryAtEachRun=True)
+								  targetAddressToReach=args.targetAddress)
 		self.stateful = args.stateful
 
 		# All possible observations from last run
