@@ -1,0 +1,14 @@
+{
+    "name": "Some test case name",
+    "initial_input": "",
+    "programmes": [
+        {
+            "command": "ls",
+            "args": []
+        },
+        {
+            "command": "cat",
+            "args": []
+        }
+    ]
+}
