@@ -1,72 +1,66 @@
 ARG parent_image
-FROM $parent_image  
+FROM $parent_image
+
+# Set up the directory for the build artifacts.
+# Can't use the WORKDIR command as it will break other images
+ENV OUT /out
+ENV WORKDIR /workspace
+RUN mkdir -p $WORKDIR
 
 RUN  apt-get update && \
   apt-get upgrade -y && \
-  apt-get install -y git sudo build-essential unzip libssl-dev wget && \
-  rm -rf /var/lib/apt/lists/* 
+  apt-get install -y git sudo build-essential unzip libssl-dev wget libboost-all-dev && \
+  rm -rf /var/lib/apt/lists/*
 
-# Setup Triton
-RUN mkdir /river
-
-# python3.6
-RUN apt-get update && \
-  apt-get install -y software-properties-common && \
-  add-apt-repository ppa:deadsnakes/ppa && \
-  apt-get update && \
-  apt-get install -y python3.6 python3.6-dev python3-pip && \
-  python3.6 -m pip install pip --upgrade && \
-  python3.6 -m pip install wheel
-
-# boost
-RUN apt-get install -y libboost-all-dev
-
-# cmake
-RUN cd /river && \
-  wget https://github.com/Kitware/CMake/releases/download/v3.19.1/cmake-3.19.1-Linux-x86_64.tar.gz && \
+# Setup cmake
+RUN cd $WORKDIR && wget https://github.com/Kitware/CMake/releases/download/v3.19.1/cmake-3.19.1-Linux-x86_64.tar.gz && \
   tar -zxvf cmake-3.19.1-Linux-x86_64.tar.gz && \
-  ln -sf /river/cmake-3.19.1-Linux-x86_64/bin/* /usr/local/bin/
+  ln -sf $WORKDIR/cmake-3.19.1-Linux-x86_64/bin/* /usr/local/bin/
 
-# capstone
-RUN cd /river && \
-  wget https://github.com/aquynh/capstone/archive/4.0.2.zip && \
-  unzip 4.0.2.zip && \
-  rm -f 4.0.2.zip && \
-  cd capstone-4.0.2 && \
-  chmod +x ./make.sh && \
-  ./make.sh && \
-  ./make.sh install
+# Install deps
+RUN pip3 install --upgrade pip && \
+  pip3 install --upgrade setuptools && \
+  pip3 install lief capstone tensorflow z3-solver
 
-# z3
-RUN cd /river && \
-  wget https://github.com/Z3Prover/z3/releases/download/z3-4.8.9/z3-4.8.9-x64-ubuntu-16.04.zip && \
-  unzip z3-4.8.9-x64-ubuntu-16.04.zip && \
-  ln -sf /river/z3-4.8.9-x64-ubuntu-16.04/bin/* /usr/local/bin/ && \
-  ln -sf /river/z3-4.8.9-x64-ubuntu-16.04/include/* /usr/local/include/
-
-# Install Triton
-RUN cd /river && \
-  git clone https://github.com/JonathanSalwan/Triton.git && \
-  cd Triton && \
-  mkdir build && \
-  cd build && \
-  cmake .. && \
-  make -j2 install
-
-# Install LIEF
-RUN python3.6 -m pip install setuptools --upgrade && \
-  pip install lief
-
-RUN pip install --use-feature=2020-resolver numpy tensorflow
- 
 # Clone river code
-RUN git clone https://github.com/unibuc-cs/river.git /river/repo
+RUN cd $WORKDIR && git clone --recursive https://github.com/unibuc-cs/river.git
 
-# Use empty libfuzzer as honggfuzz
-RUN cd /river && \
-  echo "int main(){}" > empty_lib.c && \  
-  cc -c -o empty_lib.o empty_lib.c
+# Build Triton from source and install it in the default paths
+# Will extract the path to where pip installes packages so it can tell Triton where to find libcapstone
+# Triton expects the library name to be libcapstone.so.4, so it will also create a symlink with this name
+# This RUN command has to be invoked through `/bin/bash -c ...` so it can expand the PYTHON_PACKAGES var
+RUN ["/bin/bash", "-c", "cd $WORKDIR/river/River3/ExternalTools/Triton && mkdir build && cd build && \
+    PYTHON_PACKAGES=$(pip3 show capstone | grep Location | cut -f 2 -d ' ') && \
+    CAPSTONE_INCLUDE_DIRS=${PYTHON_PACKAGES}/capstone/include/ \
+    CAPSTONE_LIBRARIES=${PYTHON_PACKAGES}/capstone/lib/libcapstone.so \
+    Z3_INCLUDE_DIRS=${PYTHON_PACKAGES}/z3/include/ \
+    Z3_LIBRARIES=${PYTHON_PACKAGES}/z3/lib/libz3.so \
+    cmake .. && \
+    make -j2 && \
+    sudo make install && \
+    sudo ln -s ${PYTHON_PACKAGES}/capstone/lib/libcapstone.so ${PYTHON_PACKAGES}/capstone/lib/libcapstone.so.4"]
 
-# ENTRYPOINT [ "python3.6", "python/concolic_RLGenerationalSearch.py"]
-# CMD ["--secondsBetweenStats", "2", "--architecture", "x64", "--maxLen", "1", "--outputType", "textual"]
+# Use shim libfuzzer as afl
+RUN ["/bin/bash", "-c", "cd $WORKDIR && \
+    echo $'#include <stdio.h>\n#include <string.h>\n#include <unistd.h>\n#include <stdlib.h>\n#include <stdint.h>\n\
+    extern \"C\" {\n\
+    int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size);\n\
+    __attribute__((weak)) int LLVMFuzzerInitialize(int *argc, char ***argv);\n\
+    }\n\
+    // Input buffer.\n\
+    static const size_t kMaxInputSize = 1 << 20;\n\
+    static uint8_t inputBuf[kMaxInputSize];\n\
+    int main(int argc, char** argv){\n\
+        if (LLVMFuzzerInitialize)\n\
+            LLVMFuzzerInitialize(&argc, &argv);\n\
+        ssize_t n_read = read(0, inputBuf, kMaxInputSize);\n\
+        if (n_read > 0) {\n\
+            uint8_t *copy = new uint8_t[n_read];\n\
+            memcpy(copy, inputBuf, n_read);\n\
+            LLVMFuzzerTestOneInput(copy, n_read);\n\
+            delete[] copy;\n\
+        }\n\
+    }\n' > river_shim.cpp"]
 
+RUN cd $WORKDIR && \
+    clang++ -stdlib=libc++ -std=c++11 -O2 -c river_shim.cpp -o river_shim.o
