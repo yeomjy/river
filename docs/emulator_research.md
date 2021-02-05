@@ -1,13 +1,40 @@
 # Contents
 
+- [Overview](#overview)
+	- [Full Fuzzing Solutions Comparison](#full-fuzzing-solutions-comparison)
+	- [Emulators Comparison](#emulators-comparison)
 - [QEMU vs. Unicorn](#qemu-vs-unicorn)
 - [Triforce AFL](#triforce-afl)
 - [P2IM & DICE](#p2im-dice)
 	- [P2IM](#p2im)
 	- [DICE](#dice)
 - [afl-unicorn](#afl-unicorn)
-- [HALucinator & hal-fuzz](#halucinator-hal-fuzz)
+- [HALucinator & hal-fuzz](#halucinator--hal-fuzz)
 - [Pretender](#pretender)
+
+# Overview 
+
+## Full Fuzzing Solutions Comparison
+ | Tool | No hardware required | Full System Emulation | Baseline Fuzzer | CPU Emulation | Peripherals Emulation | Dynamic Instrumentation | Automated Model Extraction |
+ |-------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
+ | [HALucinator](https://github.com/embedded-sec/halucinator) | :heavy_check_mark: | :heavy_check_mark: | ➖* | QEMU | HALucinator (replacing HALs with handlers) | [Avatar<sup>2](https://github.com/avatartwo/avatar2); [angr](https://github.com/angr/angr) | ❌ |
+ | [hall-fuzz](https://github.com/ucsb-seclab/hal-fuzz) | :heavy_check_mark: | :heavy_check_mark: | AFL** | Unicorn | HALucinator | Unicorn; [angr](https://github.com/angr/angr) | ❌ |
+ | [afl-unicorn](https://github.com/Battelle/afl-unicorn) | :heavy_check_mark: | :heavy_check_mark: | AFL** | Unicorn | ➖ | Unicorn | ➖ |
+ | [P2IM](https://github.com/RiS3-Lab/p2im) | :heavy_check_mark: | :heavy_check_mark: | ➖* | QEMU | P2IM (peripherals model based on registers recognition)| TODO | :heavy_check_mark: |
+ | [Triforce AFL](https://github.com/nccgroup/TriforceAFL) | :heavy_check_mark: | :heavy_check_mark: | AFL** | QEMU | ➖ | TODO | ➖ |
+ | [Pretender](https://github.com/ucsb-seclab/pretender) | ❌ | :heavy_check_mark: | ➖* | QEMU | Pretender (AI/ML techniques)| [Avatar<sup>2](https://github.com/avatartwo/avatar2) | :heavy_check_mark: |
+
+\* A drop-in fuzzer (such as AFL) can be added.
+
+\** AFL used in black-box fuzzer mode for non-instrumented binaries (i.e. for binaries that **cannot** be re-compiled with `afl-gcc`). See AFL [docs](https://github.com/google/AFL#6-fuzzing-binaries) and [Technical Details 12) Binary-only instrumentation](https://lcamtuf.coredump.cx/afl/technical_details.txt) for more details.
+
+## Emulators Comparison
+
+ | Emulator | Full System Emulation | Dynamic Instrumentation | Architectures supported | Communication Host - Guest OS|
+ |-------------|-------------|-------------|-------------|-------------|
+ | [Qiling](https://github.com/qilingframework/qiling) | :heavy_check_mark: | TODO | X86, X86_64, Arm, Arm64, MIPS, 8086 | TODO |
+ | [Unicorn](https://www.unicorn-engine.org/) | :heavy_check_mark: | TODO | ARM, ARM64, M68K, MIPS, SPARC, X86 | TODO |
+ | [QEMU](https://www.qemu.org/) | ❌ | injected hooks after basic blocks | ARM, x86, [etc](https://wiki.qemu.org/Documentation/Platforms) | [virtio-vsock](https://wiki.qemu.org/Features/VirtioVsock) |
 
 # QEMU vs. Unicorn
 Documentation for QEMU can be found [here](https://www.qemu.org/documentation/).
