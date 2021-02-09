@@ -53,12 +53,16 @@ RUN ["/bin/bash", "-c", "cd $WORKDIR && \
     int main(int argc, char** argv){\n\
         if (LLVMFuzzerInitialize)\n\
             LLVMFuzzerInitialize(&argc, &argv);\n\
+        while (1) {\n\
         ssize_t n_read = read(0, inputBuf, kMaxInputSize);\n\
         if (n_read > 0) {\n\
-            uint8_t *copy = new uint8_t[n_read];\n\
-            memcpy(copy, inputBuf, n_read);\n\
-            LLVMFuzzerTestOneInput(copy, n_read);\n\
+            size_t river_in_len = (size_t) inputBuf[0];\n\
+            uint8_t *copy = new uint8_t[river_in_len + 1];\n\
+            memcpy(copy, inputBuf + 1, river_in_len);\n\
+            copy[river_in_len] = 0;\n\
+            LLVMFuzzerTestOneInput(copy, river_in_len);\n\
             delete[] copy;\n\
+        }\n\
         }\n\
     }\n' > river_shim.cpp"]
 
