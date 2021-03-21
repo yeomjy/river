@@ -1,0 +1,237 @@
+diff --git a/fuzzers/river/builder.Dockerfile b/fuzzers/river/builder.Dockerfile
+new file mode 100644
+index 0000000..e4f043b
+--- /dev/null
++++ b/fuzzers/river/builder.Dockerfile
+@@ -0,0 +1,70 @@
++ARG parent_image
++FROM $parent_image  
++
++# Install River and dependencies to $river_path
++ARG river_path=/river
++RUN mkdir -p $river_path 
++
++# Dry run
++# # Install dependencies
++# RUN  apt-get update && \
++#   apt-get install -y && \
++#   add-apt-repository ppa:deadsnakes/ppa && \
++#   apt-get update && \
++#   apt-get upgrade -y && \
++#   apt-get install -y software-properties-common git sudo build-essential\
++#                      unzip libssl-dev wget python3 python3-pip libboost-all-dev && \
++#   rm -rf /var/lib/apt/lists/* 
++# 
++# # Install Python3.6
++# RUN apt-get update && \
++#   apt-get install -y software-properties-common && \
++#   add-apt-repository ppa:deadsnakes/ppa && \
++#   apt-get update && \
++#   apt-get install -y python3.6 python3.6-dev python3-pip && \
++#   python3.6 -m pip install pip --upgrade && \
++#   python3.6 -m pip install wheel
++# 
++# # Install CMake
++# RUN cd $river_path && \
++#   wget https://github.com/Kitware/CMake/releases/download/v3.19.1/cmake-3.19.1-Linux-x86_64.tar.gz && \
++#   tar -zxvf cmake-3.19.1-Linux-x86_64.tar.gz && \
++#   ln -sf $river_path/cmake-3.19.1-Linux-x86_64/bin/* /usr/local/bin/
++# 
++# # Install Capstone
++# RUN cd $river_path && \
++#   wget https://github.com/aquynh/capstone/archive/4.0.2.zip && \
++#   unzip 4.0.2.zip && \
++#   rm -f 4.0.2.zip && \
++#   cd capstone-4.0.2 && \
++#   chmod +x ./make.sh && \
++#   ./make.sh && \
++#   ./make.sh install
++# 
++# # Install Z3
++# RUN cd $river_path && \
++#   wget https://github.com/Z3Prover/z3/releases/download/z3-4.8.9/z3-4.8.9-x64-ubuntu-16.04.zip && \
++#   unzip z3-4.8.9-x64-ubuntu-16.04.zip && \
++#   ln -sf $river_path/z3-4.8.9-x64-ubuntu-16.04/bin/* /usr/local/bin/ && \
++#   ln -sf $river_path/z3-4.8.9-x64-ubuntu-16.04/include/* /usr/local/include/
++# 
++# # Install Triton
++# RUN cd $river_path && \
++#   git clone https://github.com/JonathanSalwan/Triton.git && \
++#   cd Triton && \
++#   mkdir build && \
++#   cd build && \
++#   cmake .. && \
++#   make -j2 install
++# 
++# # Install python tools
++# RUN pip3 install pip setuptools --upgrade && \
++#   pip3 install --use-feature=2020-resolver lief numpy tensorflow
++#  
++# # Clone river code
++# RUN git clone https://github.com/unibuc-cs/river.git $river_path/repo
++
++# Use a stub to run the fuzzer (like AFL)
++COPY stub.c $river_path
++RUN cd $river_path && \
++  cc -c -o stub.o stub.c
+diff --git a/fuzzers/river/fuzzer.py b/fuzzers/river/fuzzer.py
+new file mode 100755
+index 0000000..6fcbf2c
+--- /dev/null
++++ b/fuzzers/river/fuzzer.py
+@@ -0,0 +1,46 @@
++import os
++import shutil
++import subprocess
++
++from fuzzers import utils
++
++def build():
++    # Environment variables
++    os.environ['CC'] = 'clang'    # C compiler.
++    os.environ['CXX'] = 'clang++' # C++ compiler.
++    os.environ['CFLAGS'] = '-static -fPIE'   # Static linking
++    os.environ['CXXFLAGS'] = '-static -fPIE' # Static linking
++    os.environ['FUZZER_LIB'] = '/river/stub.o' # Fuzz library
++
++    utils.build_benchmark()
++    shutil.copytree('/river', os.environ['OUT'] + '/river', dirs_exist_ok=True)
++    print('[post_build] Finished river building process')
++
++def fuzz(input_corpus, output_corpus, target_binary):
++    """Run fuzzer."""
++
++    # Seperate out corpus and crash directories as sub-directories of
++    # |output_corpus| to avoid conflicts when corpus directory is reloaded.
++    crashes_dir = os.path.join(output_corpus, 'crashes')
++    output_corpus = os.path.join(output_corpus, 'corpus')
++    os.makedirs(crashes_dir)
++    os.makedirs(output_corpus)
++
++    print('[fuzz] Running target with river')
++    command = [
++        'python3', os.environ['OUT'] + '/river/repo/River3/python/concolic_GenerationalSearch2.py',
++        '--binaryPath', target_binary,
++        '--architecture', 'x64',
++        '--maxLen', '1000',
++        '--logLevel', 'CRITICAL',
++        '--secondsBetweenStats', '10',
++        '--outputType', 'textual',
++        '--entryfuncName', 'LLVMFuzzerTestOneInput',
++        # '--input', input_corpus,
++        # '--output', output_corpus,
++        # '--crashdir', crashes_dir,
++    ]
++
++    print('[fuzz] Running command: ' + ' '.join(command))
++    os.system('bash')
++    subprocess.check_call(command)
+diff --git a/fuzzers/river/runner.Dockerfile b/fuzzers/river/runner.Dockerfile
+new file mode 100644
+index 0000000..0306840
+--- /dev/null
++++ b/fuzzers/river/runner.Dockerfile
+@@ -0,0 +1,69 @@
++FROM gcr.io/fuzzbench/base-image
++
++# Install River and dependencies to $river_path
++ARG river_path=/out/river
++RUN mkdir -p $river_path 
++
++# Dry run
++# # Install dependencies
++# RUN  apt-get update && \
++#   apt-get install -y software-properties-common && \
++#   add-apt-repository ppa:deadsnakes/ppa && \
++#   apt-get update && \
++#   apt-get upgrade -y && \
++#   apt-get install -y git sudo build-essential unzip libssl-dev wget \
++#                      python3 python3-pip libboost-all-dev && \
++#   rm -rf /var/lib/apt/lists/* 
++# 
++# # Install Python3.6
++# RUN apt-get update && \
++#   apt-get install -y software-properties-common && \
++#   add-apt-repository ppa:deadsnakes/ppa && \
++#   apt-get update && \
++#   apt-get install -y python3.6 python3.6-dev python3-pip && \
++#   python3.6 -m pip install pip --upgrade && \
++#   python3.6 -m pip install wheel
++# 
++# # Install CMake
++# RUN cd $river_path && \
++#   wget https://github.com/Kitware/CMake/releases/download/v3.19.1/cmake-3.19.1-Linux-x86_64.tar.gz && \
++#   tar -zxvf cmake-3.19.1-Linux-x86_64.tar.gz && \
++#   ln -sf $river_path/cmake-3.19.1-Linux-x86_64/bin/* /usr/local/bin/
++# 
++# # Install Capstone
++# RUN cd $river_path && \
++#   wget https://github.com/aquynh/capstone/archive/4.0.2.zip && \
++#   unzip 4.0.2.zip && \
++#   rm -f 4.0.2.zip && \
++#   cd capstone-4.0.2 && \
++#   chmod +x ./make.sh && \
++#   ./make.sh && \
++#   ./make.sh install
++# 
++# # Install Z3
++# RUN cd $river_path && \
++#   wget https://github.com/Z3Prover/z3/releases/download/z3-4.8.9/z3-4.8.9-x64-ubuntu-16.04.zip && \
++#   unzip z3-4.8.9-x64-ubuntu-16.04.zip && \
++#   ln -sf $river_path/z3-4.8.9-x64-ubuntu-16.04/bin/* /usr/local/bin/ && \
++#   ln -sf $river_path/z3-4.8.9-x64-ubuntu-16.04/include/* /usr/local/include/
++# 
++# # Install Triton
++# RUN cd $river_path && \
++#   git clone https://github.com/JonathanSalwan/Triton.git && \
++#   cd Triton && \
++#   mkdir build && \
++#   cd build && \
++#   cmake .. && \
++#   make -j2 install
++# 
++# # Install python tools
++# RUN pip3 install pip setuptools --upgrade && \
++#   pip3 install --use-feature=2020-resolver lief numpy tensorflow
++#  
++# # Clone river code
++# RUN git clone https://github.com/unibuc-cs/river.git $river_path/repo
++
++# Use a stub to run the fuzzer (like AFL)
++COPY stub.c $river_path
++RUN cd $river_path && \
++  cc -c -o stub.o stub.c
+diff --git a/fuzzers/river/stub.c b/fuzzers/river/stub.c
+new file mode 100644
+index 0000000..ad450a9
+--- /dev/null
++++ b/fuzzers/river/stub.c
+@@ -0,0 +1,28 @@
++#include<stdio.h>
++#include<stdlib.h>
++#include<string.h>
++
++void RIVERTestOneInput(char *buffer) {
++    LLVMFuzzerTestOneInput(buffer[0], buffer + 1);
++}
++
++int main(int argc, char* argv[]) {
++    // Read binary input from stdin
++    freopen(NULL, "rb", stdin);
++
++    // Use a max input size of 4096 bytes
++    const int MAX_INPUT_SIZE = 4096;
++
++    char buffer[MAX_INPUT_SIZE];
++    int len = 0;
++
++    // While there is a new input
++    while ((len = fread(buffer, sizeof(char), MAX_INPUT_SIZE, stdin)) != 0)
++    {
++        // Send the input to the buffer
++        LLVMFuzzerTestOneInput(buffer, len);
++        if (feof(stdin)) {
++            break;
++        }
++    }
++}
