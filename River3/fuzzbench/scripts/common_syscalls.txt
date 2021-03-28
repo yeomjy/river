@@ -1,0 +1,1684 @@
+Processing: fuzzer.txt
+Processing: libpng_read_fuzzer.txt
+Processing: curl_fuzzer_ldap.txt
+Processing: xml.txt
+Processing: hb-subset-fuzzer.txt
+Processing: stbi_read_fuzzer.txt
+Processing: ftfuzzer.txt
+Processing: jsoncpp_fuzzer.txt
+Processing: convert_woff2ttf_fuzzer.txt
+Processing: ip6-send-fuzzer.txt
+Processing: libjpeg_turbo_fuzzer.txt
+Processing: standard_fuzzer.txt
+Processing: decode_fuzzer.txt
+
+fuzzer.txt
+Syscall invoking functions:
+	 -  backtrace_and_maps
+	 -  __pthread_mutex_lock_full
+	 -  __pthread_mutex_unlock_full
+	 -  __pthread_rwlock_rdlock_slow
+	 -  __pthread_rwlock_rdlock
+	 -  __pthread_rwlock_wrlock_slow
+	 -  __pthread_rwlock_unlock
+	 -  __lll_lock_wait_private
+	 -  __lll_lock_wait
+	 -  __lll_timedlock_wait
+	 -  __lll_unlock_wake_private
+	 -  __lll_unlock_wake
+	 -  __lll_timedwait_tid
+	 -  __lll_robust_lock_wait
+	 -  __lll_robust_timedlock_wait
+	 -  __write_nocancel
+	 -  __pthread_disable_asynccancel
+	 -  _ZNSt28__atomic_futex_unsigned_base19_M_futex_wait_untilEPjjbNSt6chrono8durationIlSt5ratioILl1ELl1EEEENS2_IlS3_ILl1ELl1000000000EEEE
+	 -  _ZNSt28__atomic_futex_unsigned_base19_M_futex_notify_allEPj
+	 -  __cxa_guard_acquire
+	 -  __cxa_guard_abort
+	 -  __cxa_guard_release
+	 -  generic_start_main
+	 -  __syscall_error
+	 -  __syscall_error_1
+	 -  __libc_check_standard_fds
+	 -  __libc_setup_tls
+	 -  _nl_load_locale
+	 -  _nl_load_locale_from_archive
+	 -  _nl_load_domain
+	 -  raise
+	 -  __sigprocmask
+	 -  __libc_message.constprop.0
+	 -  __libc_message
+	 -  _IO_file_close
+	 -  _IO_file_close_mmap
+	 -  _IO_new_file_write
+	 -  _IO_file_read
+	 -  _IO_file_open
+	 -  _int_free
+	 -  __gettimeofday
+	 -  _exit
+	 -  __sysconf
+	 -  __sched_getparam
+	 -  __sched_setscheduler
+	 -  __sched_getscheduler
+	 -  __sched_yield
+	 -  __sched_get_priority_max
+	 -  __sched_get_priority_min
+	 -  __xstat
+	 -  __fxstat
+	 -  __lxstat
+	 -  __open_nocancel
+	 -  __read_nocancel
+	 -  __fcntl_nocancel
+	 -  __libc_fcntl
+	 -  __close_nocancel
+	 -  __dup3
+	 -  __getcwd
+	 -  __getrlimit
+	 -  syscall
+	 -  __mmap
+	 -  __munmap
+	 -  __mprotect
+	 -  __madvise
+	 -  next_line
+	 -  __get_nprocs
+	 -  __libc_lseek
+	 -  __mremap
+	 -  __sysinfo
+	 -  __libc_disable_asynccancel
+	 -  __gconv_load_cache
+	 -  __restore_rt
+	 -  __libc_sigaction
+	 -  time
+	 -  __opendirat
+	 -  __opendir
+	 -  __alloc_dir
+	 -  __closedir
+	 -  __getdents
+	 -  __uname
+	 -  __getuid
+	 -  __geteuid
+	 -  __getgid
+	 -  __getegid
+	 -  __GI___fxstatat64
+	 -  __access
+	 -  __tcgetattr
+	 -  __brk
+	 -  __writev_nocancel
+	 -  _dl_map_object_from_fd.constprop.9
+	 -  _dl_lookup_symbol_x
+	 -  _dl_debug_vdprintf
+	 -  _dl_get_origin
+	 -  __getpid
+	 -  _dl_fixup
+	 -  _dl_profile_fixup
+	 -  __setitimer
+	 -  do_sym
+	 -  __strtol_ul_rem_tab
+	 -  __tens
+	 -  GCC_except_table8
+	 -  .debug_loc
+
+Syscall C functions:
+	 -  __sched_getscheduler
+	 -  __geteuid
+	 -  __readdir
+	 -  __libc_read
+	 -  __sched_setscheduler
+	 -  __mremap
+	 -  __brk
+	 -  __sched_get_priority_min
+	 -  __libc_fcntl
+	 -  __libc_lseek
+	 -  __sched_getparam
+	 -  __mmap
+	 -  __libc_close
+	 -  __gettimeofday
+	 -  __madvise
+	 -  __mprotect
+	 -  __munmap
+	 -  __sched_yield
+	 -  __getuid
+	 -  __getpagesize
+	 -  __getegid
+	 -  __getdents
+	 -  __writev
+	 -  time
+	 -  __sysinfo
+	 -  __uname
+	 -  __dup3
+	 -  __getgid
+	 -  __libc_open
+	 -  __sigprocmask
+	 -  __getrlimit
+	 -  __setitimer
+	 -  __libc_write
+	 -  __getpid
+	 -  exit
+	 -  __sigaction
+	 -  __getcwd
+	 -  __sched_get_priority_max
+	 -  __access
+	 -  __getdtablesize
+
+libpng_read_fuzzer.txt
+Syscall invoking functions:
+	 -  backtrace_and_maps
+	 -  generic_start_main
+	 -  __libc_check_standard_fds
+	 -  __libc_setup_tls
+	 -  _nl_load_domain
+	 -  raise
+	 -  __sigprocmask
+	 -  __libc_message.constprop.0
+	 -  __libc_message
+	 -  _IO_file_close
+	 -  _IO_file_close_mmap
+	 -  _IO_new_file_write
+	 -  _IO_file_read
+	 -  _IO_file_open
+	 -  _int_free
+	 -  _exit
+	 -  __sysconf
+	 -  __sched_yield
+	 -  __xstat
+	 -  __fxstat
+	 -  __lxstat
+	 -  __open_nocancel
+	 -  __read_nocancel
+	 -  __write_nocancel
+	 -  __fcntl_nocancel
+	 -  __libc_fcntl
+	 -  __close_nocancel
+	 -  __dup3
+	 -  __getcwd
+	 -  __getrlimit
+	 -  __mmap
+	 -  __munmap
+	 -  __mprotect
+	 -  __madvise
+	 -  next_line
+	 -  __get_nprocs
+	 -  __libc_lseek
+	 -  __mremap
+	 -  __sysinfo
+	 -  __lll_lock_wait_private
+	 -  __lll_unlock_wake_private
+	 -  __libc_disable_asynccancel
+	 -  __syscall_error
+	 -  __syscall_error_1
+	 -  __gconv_load_cache
+	 -  _nl_load_locale
+	 -  _nl_load_locale_from_archive
+	 -  __restore_rt
+	 -  __libc_sigaction
+	 -  time
+	 -  __opendirat
+	 -  __opendir
+	 -  __alloc_dir
+	 -  __closedir
+	 -  __getdents
+	 -  __uname
+	 -  __getuid
+	 -  __geteuid
+	 -  __getgid
+	 -  __getegid
+	 -  __GI___fxstatat64
+	 -  __access
+	 -  __tcgetattr
+	 -  __brk
+	 -  __writev_nocancel
+	 -  _dl_map_object_from_fd.constprop.9
+	 -  _dl_lookup_symbol_x
+	 -  _dl_debug_vdprintf
+	 -  _dl_get_origin
+	 -  __getpid
+	 -  _dl_fixup
+	 -  _dl_profile_fixup
+	 -  do_sym
+	 -  __setitimer
+	 -  __tens
+	 -  __strtol_ul_rem_tab
+
+Syscall C functions:
+	 -  __sched_yield
+	 -  __geteuid
+	 -  __getpagesize
+	 -  __getegid
+	 -  __getuid
+	 -  __getdents
+	 -  __writev
+	 -  __readdir
+	 -  __libc_read
+	 -  __mremap
+	 -  time
+	 -  __sysinfo
+	 -  __uname
+	 -  __brk
+	 -  __dup3
+	 -  __libc_fcntl
+	 -  __libc_lseek
+	 -  __getgid
+	 -  __libc_open
+	 -  __sigprocmask
+	 -  __mmap
+	 -  __libc_close
+	 -  __getrlimit
+	 -  __libc_write
+	 -  __getpid
+	 -  __setitimer
+	 -  exit
+	 -  __sigaction
+	 -  __getcwd
+	 -  __madvise
+	 -  __mprotect
+	 -  __access
+	 -  __munmap
+	 -  __getdtablesize
+
+curl_fuzzer_ldap.txt
+Syscall invoking functions:
+	 -  ecp_nistz256_precomputed
+	 -  GostR3411_94_TestParamSet
+	 -  Gost28147_CryptoProParamSetA
+	 -  .debug_info
+	 -  .debug_abbrev
+	 -  .debug_line
+	 -  .debug_loc
+
+Syscall C functions:
+	 -  __stat
+	 -  __fstat
+
+xml.txt
+Syscall invoking functions:
+	 -  backtrace_and_maps
+	 -  generic_start_main
+	 -  __libc_check_standard_fds
+	 -  __libc_setup_tls
+	 -  __gconv_load_cache
+	 -  _nl_load_locale
+	 -  _nl_load_locale_from_archive
+	 -  _nl_load_domain
+	 -  raise
+	 -  __libc_message.constprop.0
+	 -  __libc_message
+	 -  _IO_file_close
+	 -  _IO_file_close_mmap
+	 -  _IO_new_file_write
+	 -  _IO_file_read
+	 -  _IO_file_open
+	 -  _int_free
+	 -  time
+	 -  _exit
+	 -  __sysconf
+	 -  __sched_yield
+	 -  getaddrinfo
+	 -  __xstat
+	 -  __fxstat
+	 -  __lxstat
+	 -  __open_nocancel
+	 -  __read_nocancel
+	 -  __write_nocancel
+	 -  __fcntl_nocancel
+	 -  __libc_fcntl
+	 -  __close_nocancel
+	 -  __dup3
+	 -  __getcwd
+	 -  __poll_nocancel
+	 -  __getrlimit
+	 -  __select_nocancel
+	 -  __mmap
+	 -  __munmap
+	 -  __mprotect
+	 -  __madvise
+	 -  next_line
+	 -  __get_nprocs
+	 -  __libc_lseek
+	 -  __mremap
+	 -  __sysinfo
+	 -  __bind
+	 -  __connect_nocancel
+	 -  __getsockname
+	 -  __getsockopt
+	 -  __listen
+	 -  __libc_recv
+	 -  __libc_send
+	 -  __socket
+	 -  __lll_lock_wait_private
+	 -  __lll_unlock_wake_private
+	 -  __libc_disable_asynccancel
+	 -  __if_nametoindex
+	 -  __if_indextoname
+	 -  getifaddrs_internal
+	 -  __netlink_close
+	 -  __netlink_open
+	 -  __check_pf
+	 -  __check_native
+	 -  nscd_gethst_r
+	 -  __nscd_getai
+	 -  nscd_getserv_r
+	 -  open_socket
+	 -  __nscd_open_socket
+	 -  __syscall_error
+	 -  __syscall_error_1
+	 -  __restore_rt
+	 -  __libc_sigaction
+	 -  __sigprocmask
+	 -  __gettimeofday
+	 -  __opendirat
+	 -  __opendir
+	 -  __alloc_dir
+	 -  __closedir
+	 -  __getdents
+	 -  __uname
+	 -  __getuid
+	 -  __geteuid
+	 -  __getgid
+	 -  __getegid
+	 -  __GI___fxstatat64
+	 -  __access
+	 -  __tcgetattr
+	 -  __brk
+	 -  __ioctl
+	 -  __readv_nocancel
+	 -  __writev_nocancel
+	 -  __recvmsg_nocancel
+	 -  __sendto_nocancel
+	 -  __res_iclose
+	 -  __res_nclose
+	 -  _dl_map_object_from_fd.constprop.9
+	 -  _dl_lookup_symbol_x
+	 -  _dl_debug_vdprintf
+	 -  _dl_get_origin
+	 -  __getpid
+	 -  _dl_fixup
+	 -  _dl_profile_fixup
+	 -  do_sym
+	 -  __setitimer
+	 -  res_thread_freeres
+	 -  __strtol_ul_rem_tab
+	 -  __tens
+
+Syscall C functions:
+	 -  __geteuid
+	 -  __readdir
+	 -  __libc_read
+	 -  __mremap
+	 -  __select
+	 -  __brk
+	 -  __getsockname
+	 -  __libc_fcntl
+	 -  __libc_lseek
+	 -  __readv
+	 -  __mmap
+	 -  __libc_close
+	 -  __gethostname
+	 -  stat64
+	 -  __gettimeofday
+	 -  __bind
+	 -  __mprotect
+	 -  __socket
+	 -  __madvise
+	 -  __munmap
+	 -  __libc_connect
+	 -  __listen
+	 -  __libc_send
+	 -  __sched_yield
+	 -  __getuid
+	 -  __getpagesize
+	 -  __getegid
+	 -  __libc_sendto
+	 -  __libc_poll
+	 -  __getdents
+	 -  __writev
+	 -  __libc_recv
+	 -  time
+	 -  __sysinfo
+	 -  __uname
+	 -  __libc_recvmsg
+	 -  __dup3
+	 -  __getgid
+	 -  __libc_open
+	 -  __sigprocmask
+	 -  __getrlimit
+	 -  __setitimer
+	 -  __libc_write
+	 -  __getsockopt
+	 -  __getpid
+	 -  exit
+	 -  __sigaction
+	 -  __getcwd
+	 -  __ioctl
+	 -  __access
+	 -  __getdtablesize
+
+hb-subset-fuzzer.txt
+Syscall invoking functions:
+	 -  backtrace_and_maps
+	 -  __pthread_mutex_lock_full
+	 -  __pthread_mutex_unlock_full
+	 -  __lll_lock_wait_private
+	 -  __lll_lock_wait
+	 -  __lll_timedlock_wait
+	 -  __lll_unlock_wake_private
+	 -  __lll_unlock_wake
+	 -  __lll_timedwait_tid
+	 -  __lll_robust_lock_wait
+	 -  __lll_robust_timedlock_wait
+	 -  __close_nocancel
+	 -  __open_nocancel
+	 -  __pthread_disable_asynccancel
+	 -  generic_start_main
+	 -  __syscall_error
+	 -  __syscall_error_1
+	 -  __libc_check_standard_fds
+	 -  __libc_setup_tls
+	 -  _nl_load_locale
+	 -  _nl_load_locale_from_archive
+	 -  _nl_load_domain
+	 -  raise
+	 -  __sigprocmask
+	 -  __libc_message.constprop.0
+	 -  __libc_message
+	 -  _IO_file_close
+	 -  _IO_file_close_mmap
+	 -  _IO_new_file_write
+	 -  _IO_file_read
+	 -  _IO_file_open
+	 -  _int_free
+	 -  __gettimeofday
+	 -  _exit
+	 -  __sysconf
+	 -  __sched_getparam
+	 -  __sched_setscheduler
+	 -  __sched_getscheduler
+	 -  __sched_yield
+	 -  __sched_get_priority_max
+	 -  __sched_get_priority_min
+	 -  __xstat
+	 -  __fxstat
+	 -  __lxstat
+	 -  __read_nocancel
+	 -  __write_nocancel
+	 -  __fcntl_nocancel
+	 -  __libc_fcntl
+	 -  __dup3
+	 -  __getcwd
+	 -  __getrlimit
+	 -  __mmap
+	 -  __munmap
+	 -  __mprotect
+	 -  __madvise
+	 -  next_line
+	 -  __get_nprocs
+	 -  __libc_lseek
+	 -  __mremap
+	 -  __sysinfo
+	 -  __libc_disable_asynccancel
+	 -  __gconv_load_cache
+	 -  __restore_rt
+	 -  __libc_sigaction
+	 -  time
+	 -  __opendirat
+	 -  __opendir
+	 -  __alloc_dir
+	 -  __closedir
+	 -  __getdents
+	 -  __uname
+	 -  __getuid
+	 -  __geteuid
+	 -  __getgid
+	 -  __getegid
+	 -  __GI___fxstatat64
+	 -  __access
+	 -  __tcgetattr
+	 -  __brk
+	 -  __writev_nocancel
+	 -  _dl_map_object_from_fd.constprop.9
+	 -  _dl_lookup_symbol_x
+	 -  _dl_debug_vdprintf
+	 -  _dl_get_origin
+	 -  __getpid
+	 -  _dl_fixup
+	 -  _dl_profile_fixup
+	 -  do_sym
+	 -  __setitimer
+	 -  _ZL33_indic_syllable_machine_key_spans
+	 -  _ZL37_indic_syllable_machine_trans_actions
+	 -  __strtol_ul_rem_tab
+	 -  __tens
+	 -  __GNU_EH_FRAME_HDR
+	 -  __EH_FRAME_BEGIN__
+	 -  .debug_info
+	 -  .debug_line
+	 -  .debug_str
+	 -  .debug_loc
+
+Syscall C functions:
+	 -  __sched_getscheduler
+	 -  __geteuid
+	 -  __readdir
+	 -  __libc_read
+	 -  __sched_setscheduler
+	 -  __mremap
+	 -  __brk
+	 -  __sched_get_priority_min
+	 -  __libc_fcntl
+	 -  __libc_lseek
+	 -  __mmap
+	 -  __libc_close
+	 -  __sched_getparam
+	 -  __gettimeofday
+	 -  __madvise
+	 -  __mprotect
+	 -  __munmap
+	 -  __sched_yield
+	 -  __getuid
+	 -  __getpagesize
+	 -  __getegid
+	 -  __getdents
+	 -  __writev
+	 -  fstat64
+	 -  time
+	 -  __sysinfo
+	 -  __uname
+	 -  __dup3
+	 -  __getgid
+	 -  __libc_open
+	 -  __sigprocmask
+	 -  __getrlimit
+	 -  __setitimer
+	 -  __libc_write
+	 -  __getpid
+	 -  exit
+	 -  __sigaction
+	 -  __getcwd
+	 -  __sched_get_priority_max
+	 -  __access
+	 -  __getdtablesize
+
+stbi_read_fuzzer.txt
+Syscall invoking functions:
+	 -  backtrace_and_maps
+	 -  generic_start_main
+	 -  __libc_check_standard_fds
+	 -  __libc_setup_tls
+	 -  _nl_load_domain
+	 -  raise
+	 -  __libc_message.constprop.0
+	 -  __libc_message
+	 -  _IO_file_close
+	 -  _IO_file_close_mmap
+	 -  _IO_new_file_write
+	 -  _IO_file_read
+	 -  _IO_file_open
+	 -  _int_free
+	 -  _exit
+	 -  __sysconf
+	 -  __sched_yield
+	 -  __xstat
+	 -  __fxstat
+	 -  __lxstat
+	 -  __open_nocancel
+	 -  __read_nocancel
+	 -  __write_nocancel
+	 -  __fcntl_nocancel
+	 -  __libc_fcntl
+	 -  __close_nocancel
+	 -  __dup3
+	 -  __getcwd
+	 -  __getrlimit
+	 -  __mmap
+	 -  __munmap
+	 -  __mprotect
+	 -  __madvise
+	 -  next_line
+	 -  __get_nprocs
+	 -  __libc_lseek
+	 -  __mremap
+	 -  __sysinfo
+	 -  __lll_lock_wait_private
+	 -  __lll_unlock_wake_private
+	 -  __libc_disable_asynccancel
+	 -  __syscall_error
+	 -  __syscall_error_1
+	 -  __gconv_load_cache
+	 -  _nl_load_locale
+	 -  _nl_load_locale_from_archive
+	 -  __restore_rt
+	 -  __libc_sigaction
+	 -  __sigprocmask
+	 -  time
+	 -  __opendirat
+	 -  __opendir
+	 -  __alloc_dir
+	 -  __closedir
+	 -  __getdents
+	 -  __uname
+	 -  __getuid
+	 -  __geteuid
+	 -  __getgid
+	 -  __getegid
+	 -  __GI___fxstatat64
+	 -  __access
+	 -  __tcgetattr
+	 -  __brk
+	 -  __writev_nocancel
+	 -  _dl_map_object_from_fd.constprop.9
+	 -  _dl_lookup_symbol_x
+	 -  _dl_debug_vdprintf
+	 -  _dl_get_origin
+	 -  __getpid
+	 -  _dl_fixup
+	 -  _dl_profile_fixup
+	 -  __setitimer
+	 -  do_sym
+	 -  __strtol_ul_rem_tab
+	 -  __tens
+
+Syscall C functions:
+	 -  __sched_yield
+	 -  __geteuid
+	 -  __getpagesize
+	 -  __getegid
+	 -  __getuid
+	 -  __getdents
+	 -  __writev
+	 -  __readdir
+	 -  __libc_read
+	 -  __mremap
+	 -  time
+	 -  __sysinfo
+	 -  __uname
+	 -  __brk
+	 -  __dup3
+	 -  __libc_fcntl
+	 -  __libc_lseek
+	 -  __getgid
+	 -  __libc_open
+	 -  __sigprocmask
+	 -  __mmap
+	 -  __libc_close
+	 -  __getrlimit
+	 -  __libc_write
+	 -  __getpid
+	 -  __setitimer
+	 -  exit
+	 -  __sigaction
+	 -  __getcwd
+	 -  __madvise
+	 -  __mprotect
+	 -  __access
+	 -  __munmap
+	 -  __getdtablesize
+
+ftfuzzer.txt
+Syscall invoking functions:
+	 -  backtrace_and_maps
+	 -  _ZNSt28__atomic_futex_unsigned_base19_M_futex_wait_untilEPjjbNSt6chrono8durationIlSt5ratioILl1ELl1EEEENS2_IlS3_ILl1ELl1000000000EEEE
+	 -  _ZNSt28__atomic_futex_unsigned_base19_M_futex_notify_allEPj
+	 -  __cxa_guard_acquire
+	 -  __cxa_guard_abort
+	 -  __cxa_guard_release
+	 -  generic_start_main
+	 -  __libc_check_standard_fds
+	 -  __libc_setup_tls
+	 -  __gconv_load_cache
+	 -  _nl_load_locale
+	 -  _nl_load_locale_from_archive
+	 -  _nl_load_domain
+	 -  raise
+	 -  __sigprocmask
+	 -  __libc_message.constprop.0
+	 -  __libc_message
+	 -  _IO_file_close
+	 -  _IO_file_close_mmap
+	 -  _IO_new_file_write
+	 -  _IO_file_read
+	 -  _IO_file_open
+	 -  _int_free
+	 -  __gettimeofday
+	 -  _exit
+	 -  __sysconf
+	 -  __sched_yield
+	 -  __xstat
+	 -  __fxstat
+	 -  __lxstat
+	 -  __open_nocancel
+	 -  __read_nocancel
+	 -  __write_nocancel
+	 -  __fcntl_nocancel
+	 -  __libc_fcntl
+	 -  __close_nocancel
+	 -  __dup3
+	 -  __getcwd
+	 -  __unlink
+	 -  __getrlimit
+	 -  syscall
+	 -  __mmap
+	 -  __munmap
+	 -  __mprotect
+	 -  __madvise
+	 -  next_line
+	 -  __get_nprocs
+	 -  __libc_lseek
+	 -  __mremap
+	 -  __sysinfo
+	 -  __lll_lock_wait_private
+	 -  __lll_unlock_wake_private
+	 -  __libc_disable_asynccancel
+	 -  __syscall_error
+	 -  __syscall_error_1
+	 -  __restore_rt
+	 -  __libc_sigaction
+	 -  time
+	 -  __opendirat
+	 -  __opendir
+	 -  __alloc_dir
+	 -  __closedir
+	 -  __getdents
+	 -  __uname
+	 -  __getpid
+	 -  __getuid
+	 -  __geteuid
+	 -  __getgid
+	 -  __getegid
+	 -  __GI___fxstatat64
+	 -  __mkdir
+	 -  __access
+	 -  __tcgetattr
+	 -  __brk
+	 -  __writev_nocancel
+	 -  _dl_map_object_from_fd.constprop.9
+	 -  _dl_lookup_symbol_x
+	 -  _dl_debug_vdprintf
+	 -  _dl_get_origin
+	 -  _dl_fixup
+	 -  _dl_profile_fixup
+	 -  do_sym
+	 -  __setitimer
+	 -  __strtol_ul_rem_tab
+	 -  __tens
+	 -  GCC_except_table246
+
+Syscall C functions:
+	 -  __geteuid
+	 -  __readdir
+	 -  __libc_read
+	 -  __mremap
+	 -  __brk
+	 -  __libc_fcntl
+	 -  __libc_lseek
+	 -  __mmap
+	 -  __libc_close
+	 -  __gettimeofday
+	 -  __madvise
+	 -  __mprotect
+	 -  __munmap
+	 -  __sched_yield
+	 -  __fstat
+	 -  __getpagesize
+	 -  __getegid
+	 -  __getuid
+	 -  __mkdir
+	 -  __getdents
+	 -  __writev
+	 -  time
+	 -  __sysinfo
+	 -  __uname
+	 -  __dup3
+	 -  __getgid
+	 -  __libc_open
+	 -  __sigprocmask
+	 -  __getrlimit
+	 -  __unlink
+	 -  __setitimer
+	 -  __libc_write
+	 -  __getpid
+	 -  exit
+	 -  __sigaction
+	 -  __getcwd
+	 -  __access
+	 -  __getdtablesize
+
+jsoncpp_fuzzer.txt
+Syscall invoking functions:
+	 -  backtrace_and_maps
+	 -  __cxa_guard_acquire
+	 -  __cxa_guard_abort
+	 -  __cxa_guard_release
+	 -  _ZNSt28__atomic_futex_unsigned_base19_M_futex_wait_untilEPjjbNSt6chrono8durationIlSt5ratioILl1ELl1EEEENS2_IlS3_ILl1ELl1000000000EEEE
+	 -  _ZNSt28__atomic_futex_unsigned_base19_M_futex_notify_allEPj
+	 -  generic_start_main
+	 -  __libc_check_standard_fds
+	 -  __libc_setup_tls
+	 -  _nl_load_locale
+	 -  _nl_load_locale_from_archive
+	 -  _nl_load_domain
+	 -  raise
+	 -  __libc_message.constprop.0
+	 -  __libc_message
+	 -  _IO_file_close
+	 -  _IO_file_close_mmap
+	 -  _IO_new_file_write
+	 -  _IO_file_read
+	 -  _IO_file_open
+	 -  _int_free
+	 -  __gettimeofday
+	 -  _exit
+	 -  __sysconf
+	 -  __sched_yield
+	 -  __xstat
+	 -  __fxstat
+	 -  __lxstat
+	 -  __open_nocancel
+	 -  __read_nocancel
+	 -  __write_nocancel
+	 -  __fcntl_nocancel
+	 -  __libc_fcntl
+	 -  __close_nocancel
+	 -  __dup3
+	 -  __getcwd
+	 -  __poll_nocancel
+	 -  __getrlimit
+	 -  __ioctl
+	 -  __writev_nocancel
+	 -  syscall
+	 -  __mmap
+	 -  __munmap
+	 -  __mprotect
+	 -  __madvise
+	 -  next_line
+	 -  __get_nprocs
+	 -  __libc_lseek
+	 -  __mremap
+	 -  __sysinfo
+	 -  __lll_lock_wait_private
+	 -  __lll_unlock_wake_private
+	 -  __libc_disable_asynccancel
+	 -  __syscall_error
+	 -  __syscall_error_1
+	 -  __gconv_load_cache
+	 -  __restore_rt
+	 -  __libc_sigaction
+	 -  __sigprocmask
+	 -  time
+	 -  __opendirat
+	 -  __opendir
+	 -  __alloc_dir
+	 -  __closedir
+	 -  __getdents
+	 -  __uname
+	 -  __getuid
+	 -  __geteuid
+	 -  __getgid
+	 -  __getegid
+	 -  __GI___fxstatat64
+	 -  __access
+	 -  __tcgetattr
+	 -  __brk
+	 -  _dl_map_object_from_fd.constprop.9
+	 -  _dl_lookup_symbol_x
+	 -  _dl_debug_vdprintf
+	 -  _dl_get_origin
+	 -  __getpid
+	 -  _dl_fixup
+	 -  _dl_profile_fixup
+	 -  __setitimer
+	 -  do_sym
+	 -  __tens
+	 -  __strtol_ul_rem_tab
+	 -  GCC_except_table80
+
+Syscall C functions:
+	 -  __sched_yield
+	 -  __geteuid
+	 -  __getpagesize
+	 -  __getegid
+	 -  __getuid
+	 -  __libc_poll
+	 -  __getdents
+	 -  __writev
+	 -  __readdir
+	 -  __libc_read
+	 -  __mremap
+	 -  time
+	 -  __sysinfo
+	 -  __uname
+	 -  __brk
+	 -  __dup3
+	 -  __libc_fcntl
+	 -  __libc_lseek
+	 -  __getgid
+	 -  __libc_open
+	 -  __sigprocmask
+	 -  __mmap
+	 -  __libc_close
+	 -  __getrlimit
+	 -  __libc_write
+	 -  __getpid
+	 -  __setitimer
+	 -  exit
+	 -  __gettimeofday
+	 -  __sigaction
+	 -  __getcwd
+	 -  __madvise
+	 -  __mprotect
+	 -  __ioctl
+	 -  __access
+	 -  __munmap
+	 -  __getdtablesize
+
+convert_woff2ttf_fuzzer.txt
+Syscall invoking functions:
+	 -  backtrace_and_maps
+	 -  _ZNSt28__atomic_futex_unsigned_base19_M_futex_wait_untilEPjjbNSt6chrono8durationIlSt5ratioILl1ELl1EEEENS2_IlS3_ILl1ELl1000000000EEEE
+	 -  _ZNSt28__atomic_futex_unsigned_base19_M_futex_notify_allEPj
+	 -  __cxa_guard_acquire
+	 -  __cxa_guard_abort
+	 -  __cxa_guard_release
+	 -  generic_start_main
+	 -  __libc_check_standard_fds
+	 -  __libc_setup_tls
+	 -  _nl_load_locale
+	 -  _nl_load_locale_from_archive
+	 -  _nl_load_domain
+	 -  raise
+	 -  __libc_message.constprop.0
+	 -  __libc_message
+	 -  _IO_file_close
+	 -  _IO_file_close_mmap
+	 -  _IO_new_file_write
+	 -  _IO_file_read
+	 -  _IO_file_open
+	 -  _int_free
+	 -  __gettimeofday
+	 -  _exit
+	 -  __sysconf
+	 -  __sched_yield
+	 -  __xstat
+	 -  __fxstat
+	 -  __lxstat
+	 -  __open_nocancel
+	 -  __read_nocancel
+	 -  __write_nocancel
+	 -  __fcntl_nocancel
+	 -  __libc_fcntl
+	 -  __close_nocancel
+	 -  __dup3
+	 -  __getcwd
+	 -  __getrlimit
+	 -  syscall
+	 -  __mmap
+	 -  __munmap
+	 -  __mprotect
+	 -  __madvise
+	 -  next_line
+	 -  __get_nprocs
+	 -  __libc_lseek
+	 -  __mremap
+	 -  __sysinfo
+	 -  __lll_lock_wait_private
+	 -  __lll_unlock_wake_private
+	 -  __libc_disable_asynccancel
+	 -  __syscall_error
+	 -  __syscall_error_1
+	 -  __gconv_load_cache
+	 -  __restore_rt
+	 -  __libc_sigaction
+	 -  __sigprocmask
+	 -  time
+	 -  __opendirat
+	 -  __opendir
+	 -  __alloc_dir
+	 -  __closedir
+	 -  __getdents
+	 -  __uname
+	 -  __getuid
+	 -  __geteuid
+	 -  __getgid
+	 -  __getegid
+	 -  __GI___fxstatat64
+	 -  __access
+	 -  __tcgetattr
+	 -  __brk
+	 -  __writev_nocancel
+	 -  _dl_map_object_from_fd.constprop.9
+	 -  _dl_lookup_symbol_x
+	 -  _dl_debug_vdprintf
+	 -  _dl_get_origin
+	 -  __getpid
+	 -  _dl_fixup
+	 -  _dl_profile_fixup
+	 -  __setitimer
+	 -  do_sym
+	 -  __tens
+	 -  __strtol_ul_rem_tab
+	 -  GCC_except_table0
+
+Syscall C functions:
+	 -  __sched_yield
+	 -  __geteuid
+	 -  __getpagesize
+	 -  __getegid
+	 -  __getuid
+	 -  __getdents
+	 -  __writev
+	 -  __readdir
+	 -  __libc_read
+	 -  __mremap
+	 -  time
+	 -  __sysinfo
+	 -  __uname
+	 -  __brk
+	 -  __dup3
+	 -  __libc_fcntl
+	 -  __libc_lseek
+	 -  __getgid
+	 -  __libc_open
+	 -  __sigprocmask
+	 -  __mmap
+	 -  __libc_close
+	 -  __getrlimit
+	 -  __libc_write
+	 -  __getpid
+	 -  __setitimer
+	 -  exit
+	 -  __gettimeofday
+	 -  __sigaction
+	 -  __getcwd
+	 -  __madvise
+	 -  __mprotect
+	 -  __access
+	 -  __munmap
+	 -  __getdtablesize
+
+ip6-send-fuzzer.txt
+Syscall invoking functions:
+	 -  __FRAME_END__-0x202e0
+
+Syscall C functions:
+
+libjpeg_turbo_fuzzer.txt
+Syscall invoking functions:
+	 -  backtrace_and_maps
+	 -  generic_start_main
+	 -  __libc_check_standard_fds
+	 -  __libc_setup_tls
+	 -  _nl_load_domain
+	 -  raise
+	 -  __sigprocmask
+	 -  __libc_message.constprop.0
+	 -  __libc_message
+	 -  _IO_file_close
+	 -  _IO_file_close_mmap
+	 -  _IO_new_file_write
+	 -  _IO_file_read
+	 -  _IO_file_open
+	 -  _int_free
+	 -  _exit
+	 -  __sysconf
+	 -  __sched_yield
+	 -  __xstat
+	 -  __fxstat
+	 -  __lxstat
+	 -  __open_nocancel
+	 -  __read_nocancel
+	 -  __write_nocancel
+	 -  __fcntl_nocancel
+	 -  __libc_fcntl
+	 -  __close_nocancel
+	 -  __dup3
+	 -  __getcwd
+	 -  __getrlimit
+	 -  __mmap
+	 -  __munmap
+	 -  __mprotect
+	 -  __madvise
+	 -  next_line
+	 -  __get_nprocs
+	 -  __libc_lseek
+	 -  __mremap
+	 -  __sysinfo
+	 -  __lll_lock_wait_private
+	 -  __lll_unlock_wake_private
+	 -  __libc_disable_asynccancel
+	 -  __syscall_error
+	 -  __syscall_error_1
+	 -  __gconv_load_cache
+	 -  _nl_load_locale
+	 -  _nl_load_locale_from_archive
+	 -  __restore_rt
+	 -  __libc_sigaction
+	 -  time
+	 -  __opendirat
+	 -  __opendir
+	 -  __alloc_dir
+	 -  __closedir
+	 -  __getdents
+	 -  __uname
+	 -  __getuid
+	 -  __geteuid
+	 -  __getgid
+	 -  __getegid
+	 -  __GI___fxstatat64
+	 -  __access
+	 -  __tcgetattr
+	 -  __brk
+	 -  __writev_nocancel
+	 -  _dl_map_object_from_fd.constprop.9
+	 -  _dl_lookup_symbol_x
+	 -  _dl_debug_vdprintf
+	 -  _dl_get_origin
+	 -  __getpid
+	 -  _dl_fixup
+	 -  _dl_profile_fixup
+	 -  do_sym
+	 -  __setitimer
+	 -  __strtol_ul_rem_tab
+	 -  __tens
+
+Syscall C functions:
+	 -  __sched_yield
+	 -  __geteuid
+	 -  __getpagesize
+	 -  __getegid
+	 -  __getuid
+	 -  __getdents
+	 -  __writev
+	 -  __readdir
+	 -  __libc_read
+	 -  __mremap
+	 -  time
+	 -  __sysinfo
+	 -  __uname
+	 -  __brk
+	 -  __dup3
+	 -  __libc_fcntl
+	 -  __libc_lseek
+	 -  __getgid
+	 -  __libc_open
+	 -  __sigprocmask
+	 -  __mmap
+	 -  __libc_close
+	 -  __getrlimit
+	 -  __libc_write
+	 -  __getpid
+	 -  __setitimer
+	 -  exit
+	 -  __sigaction
+	 -  __getcwd
+	 -  __madvise
+	 -  __mprotect
+	 -  __access
+	 -  __munmap
+	 -  __getdtablesize
+
+standard_fuzzer.txt
+Syscall invoking functions:
+	 -  backtrace_and_maps
+	 -  __pthread_mutex_lock_full
+	 -  __pthread_mutex_unlock_full
+	 -  __lll_lock_wait_private
+	 -  __lll_lock_wait
+	 -  __lll_timedlock_wait
+	 -  __lll_unlock_wake_private
+	 -  __lll_unlock_wake
+	 -  __lll_timedwait_tid
+	 -  __lll_robust_lock_wait
+	 -  __lll_robust_timedlock_wait
+	 -  generic_start_main
+	 -  __libc_check_standard_fds
+	 -  __libc_setup_tls
+	 -  _nl_load_domain
+	 -  raise
+	 -  __libc_message.constprop.0
+	 -  __libc_message
+	 -  _IO_file_close
+	 -  _IO_file_close_mmap
+	 -  _IO_new_file_write
+	 -  _IO_file_read
+	 -  _IO_file_open
+	 -  _int_free
+	 -  __gettimeofday
+	 -  _exit
+	 -  __sysconf
+	 -  __sched_getparam
+	 -  __sched_setscheduler
+	 -  __sched_getscheduler
+	 -  __sched_yield
+	 -  __sched_get_priority_max
+	 -  __sched_get_priority_min
+	 -  __xstat
+	 -  __fxstat
+	 -  __lxstat
+	 -  __open_nocancel
+	 -  __read_nocancel
+	 -  __write_nocancel
+	 -  __fcntl_nocancel
+	 -  __libc_fcntl
+	 -  __close_nocancel
+	 -  __dup3
+	 -  __getcwd
+	 -  __getrlimit
+	 -  __mmap
+	 -  __munmap
+	 -  __mprotect
+	 -  __madvise
+	 -  next_line
+	 -  __get_nprocs
+	 -  __libc_lseek
+	 -  __mremap
+	 -  __sysinfo
+	 -  __libc_disable_asynccancel
+	 -  __syscall_error
+	 -  __syscall_error_1
+	 -  __gconv_load_cache
+	 -  _nl_load_locale
+	 -  _nl_load_locale_from_archive
+	 -  __restore_rt
+	 -  __libc_sigaction
+	 -  __sigprocmask
+	 -  time
+	 -  __opendirat
+	 -  __opendir
+	 -  __alloc_dir
+	 -  __closedir
+	 -  __getdents
+	 -  __uname
+	 -  __getuid
+	 -  __geteuid
+	 -  __getgid
+	 -  __getegid
+	 -  __GI___fxstatat64
+	 -  __access
+	 -  __tcgetattr
+	 -  __brk
+	 -  __writev_nocancel
+	 -  _dl_map_object_from_fd.constprop.9
+	 -  _dl_lookup_symbol_x
+	 -  _dl_debug_vdprintf
+	 -  _dl_get_origin
+	 -  __getpid
+	 -  _dl_fixup
+	 -  _dl_profile_fixup
+	 -  __setitimer
+	 -  do_sym
+	 -  __strtol_ul_rem_tab
+	 -  __tens
+	 -  .debug_info
+	 -  .debug_loc
+
+Syscall C functions:
+	 -  __sched_getscheduler
+	 -  __geteuid
+	 -  __readdir
+	 -  __libc_read
+	 -  __sched_setscheduler
+	 -  __mremap
+	 -  __brk
+	 -  __sched_get_priority_min
+	 -  __libc_fcntl
+	 -  __libc_lseek
+	 -  __sched_getparam
+	 -  __mmap
+	 -  __libc_close
+	 -  __gettimeofday
+	 -  setup
+	 -  __madvise
+	 -  __mprotect
+	 -  __munmap
+	 -  __sched_yield
+	 -  __getuid
+	 -  __getpagesize
+	 -  __getegid
+	 -  __getdents
+	 -  __writev
+	 -  time
+	 -  __sysinfo
+	 -  __uname
+	 -  __dup3
+	 -  __getgid
+	 -  __libc_open
+	 -  __sigprocmask
+	 -  __getrlimit
+	 -  __setitimer
+	 -  __libc_write
+	 -  __getpid
+	 -  exit
+	 -  __sigaction
+	 -  __getcwd
+	 -  __sched_get_priority_max
+	 -  __access
+	 -  __getdtablesize
+
+decode_fuzzer.txt
+Syscall invoking functions:
+	 -  backtrace_and_maps
+	 -  generic_start_main
+	 -  __libc_check_standard_fds
+	 -  __libc_setup_tls
+	 -  _nl_load_domain
+	 -  raise
+	 -  __libc_message.constprop.0
+	 -  __libc_message
+	 -  _IO_file_close
+	 -  _IO_file_close_mmap
+	 -  _IO_new_file_write
+	 -  _IO_file_read
+	 -  _IO_file_open
+	 -  _int_free
+	 -  _exit
+	 -  __sysconf
+	 -  __sched_yield
+	 -  __xstat
+	 -  __fxstat
+	 -  __lxstat
+	 -  __open_nocancel
+	 -  __read_nocancel
+	 -  __write_nocancel
+	 -  __fcntl_nocancel
+	 -  __libc_fcntl
+	 -  __close_nocancel
+	 -  __dup3
+	 -  __getcwd
+	 -  __getrlimit
+	 -  __mmap
+	 -  __munmap
+	 -  __mprotect
+	 -  __madvise
+	 -  next_line
+	 -  __get_nprocs
+	 -  __libc_lseek
+	 -  __mremap
+	 -  __sysinfo
+	 -  __lll_lock_wait_private
+	 -  __lll_unlock_wake_private
+	 -  __libc_disable_asynccancel
+	 -  __syscall_error
+	 -  __syscall_error_1
+	 -  __gconv_load_cache
+	 -  _nl_load_locale
+	 -  _nl_load_locale_from_archive
+	 -  __restore_rt
+	 -  __libc_sigaction
+	 -  __sigprocmask
+	 -  time
+	 -  __opendirat
+	 -  __opendir
+	 -  __alloc_dir
+	 -  __closedir
+	 -  __getdents
+	 -  __uname
+	 -  __getuid
+	 -  __geteuid
+	 -  __getgid
+	 -  __getegid
+	 -  __GI___fxstatat64
+	 -  __access
+	 -  __tcgetattr
+	 -  __brk
+	 -  __writev_nocancel
+	 -  _dl_map_object_from_fd.constprop.9
+	 -  _dl_lookup_symbol_x
+	 -  _dl_debug_vdprintf
+	 -  _dl_get_origin
+	 -  __getpid
+	 -  _dl_fixup
+	 -  _dl_profile_fixup
+	 -  __setitimer
+	 -  do_sym
+	 -  __strtol_ul_rem_tab
+	 -  __tens
+
+Syscall C functions:
+	 -  __sched_yield
+	 -  __geteuid
+	 -  __getpagesize
+	 -  __getegid
+	 -  __getuid
+	 -  __getdents
+	 -  __writev
+	 -  __readdir
+	 -  __libc_read
+	 -  __mremap
+	 -  time
+	 -  __sysinfo
+	 -  __uname
+	 -  __brk
+	 -  __dup3
+	 -  __libc_fcntl
+	 -  __libc_lseek
+	 -  __getgid
+	 -  __libc_open
+	 -  __sigprocmask
+	 -  __mmap
+	 -  __libc_close
+	 -  __getrlimit
+	 -  __libc_write
+	 -  __getpid
+	 -  __setitimer
+	 -  exit
+	 -  __sigaction
+	 -  __getcwd
+	 -  __madvise
+	 -  __mprotect
+	 -  __access
+	 -  __munmap
+	 -  __getdtablesize
+
+Number of distinct functions invoking syscalls: 150
+	 __sched_getscheduler
+	 __geteuid
+	 raise
+	 __if_indextoname
+	 __libc_message.constprop.0
+	 __gconv_load_cache
+	 __nscd_getai
+	 __pthread_rwlock_rdlock_slow
+	 __open_nocancel
+	 _IO_file_close_mmap
+	 __brk
+	 __lll_timedlock_wait
+	 getaddrinfo
+	 __fcntl_nocancel
+	 __mmap
+	 __write_nocancel
+	 __gettimeofday
+	 __lll_lock_wait
+	 backtrace_and_maps
+	 .debug_loc
+	 __madvise
+	 __munmap
+	 __listen
+	 __lll_unlock_wake_private
+	 _ZNSt28__atomic_futex_unsigned_base19_M_futex_wait_untilEPjjbNSt6chrono8durationIlSt5ratioILl1ELl1EEEENS2_IlS3_ILl1ELl1000000000EEEE
+	 __libc_message
+	 __libc_send
+	 __getuid
+	 __select_nocancel
+	 _exit
+	 __res_nclose
+	 time
+	 __EH_FRAME_BEGIN__
+	 __opendir
+	 __lll_robust_timedlock_wait
+	 _dl_get_origin
+	 res_thread_freeres
+	 __sigprocmask
+	 __unlink
+	 __getpid
+	 .debug_line
+	 __connect_nocancel
+	 _IO_new_file_write
+	 __opendirat
+	 _IO_file_close
+	 _dl_debug_vdprintf
+	 __pthread_rwlock_rdlock
+	 __tcgetattr
+	 __cxa_guard_acquire
+	 __libc_check_standard_fds
+	 __sched_setscheduler
+	 __pthread_rwlock_wrlock_slow
+	 __alloc_dir
+	 GostR3411_94_TestParamSet
+	 __getsockname
+	 __libc_fcntl
+	 _dl_lookup_symbol_x
+	 __sched_getparam
+	 syscall
+	 .debug_info
+	 __sendto_nocancel
+	 __pthread_mutex_lock_full
+	 _IO_file_open
+	 .debug_abbrev
+	 __check_pf
+	 __xstat
+	 __getdents
+	 __getegid
+	 __lll_timedwait_tid
+	 generic_start_main
+	 __sysinfo
+	 __getgid
+	 __tens
+	 ecp_nistz256_precomputed
+	 __syscall_error
+	 __lll_lock_wait_private
+	 __getsockopt
+	 __FRAME_END__-0x202e0
+	 __if_nametoindex
+	 __restore_rt
+	 __getcwd
+	 __read_nocancel
+	 __GI___fxstatat64
+	 __pthread_disable_asynccancel
+	 __pthread_mutex_unlock_full
+	 __strtol_ul_rem_tab
+	 __libc_setup_tls
+	 __libc_sigaction
+	 __netlink_close
+	 __sched_get_priority_min
+	 next_line
+	 __libc_lseek
+	 _dl_map_object_from_fd.constprop.9
+	 getifaddrs_internal
+	 __cxa_guard_abort
+	 __syscall_error_1
+	 _dl_profile_fixup
+	 _ZL33_indic_syllable_machine_key_spans
+	 _IO_file_read
+	 __readv_nocancel
+	 __sched_yield
+	 __poll_nocancel
+	 _nl_load_locale_from_archive
+	 __res_iclose
+	 __uname
+	 _dl_fixup
+	 GCC_except_table80
+	 __lll_robust_lock_wait
+	 __getrlimit
+	 __close_nocancel
+	 __nscd_open_socket
+	 nscd_getserv_r
+	 __sched_get_priority_max
+	 __ioctl
+	 __access
+	 Gost28147_CryptoProParamSetA
+	 __check_native
+	 __GNU_EH_FRAME_HDR
+	 __lll_unlock_wake
+	 __libc_disable_asynccancel
+	 __netlink_open
+	 _int_free
+	 .debug_str
+	 open_socket
+	 do_sym
+	 __mremap
+	 __closedir
+	 _ZNSt28__atomic_futex_unsigned_base19_M_futex_notify_allEPj
+	 GCC_except_table246
+	 __recvmsg_nocancel
+	 __bind
+	 __mprotect
+	 __socket
+	 __writev_nocancel
+	 __get_nprocs
+	 __sysconf
+	 __mkdir
+	 __cxa_guard_release
+	 __fxstat
+	 __libc_recv
+	 _nl_load_locale
+	 GCC_except_table0
+	 __dup3
+	 __setitimer
+	 nscd_gethst_r
+	 GCC_except_table8
+	 _nl_load_domain
+	 __pthread_rwlock_unlock
+	 _ZL37_indic_syllable_machine_trans_actions
+	 __lxstat
+
+Number of distinct C functions: 62
+	 __sched_getscheduler
+	 __geteuid
+	 __readdir
+	 __libc_read
+	 __brk
+	 __sched_get_priority_min
+	 __libc_lseek
+	 __mmap
+	 stat64
+	 __gettimeofday
+	 __madvise
+	 __munmap
+	 __libc_connect
+	 __listen
+	 __libc_send
+	 __sched_yield
+	 __getuid
+	 __fstat
+	 __libc_poll
+	 __writev
+	 fstat64
+	 time
+	 __uname
+	 __libc_open
+	 __sigprocmask
+	 __getrlimit
+	 __unlink
+	 __getpid
+	 __sigaction
+	 __sched_get_priority_max
+	 __ioctl
+	 __access
+	 __getdtablesize
+	 __sched_setscheduler
+	 __mremap
+	 __select
+	 __getsockname
+	 __libc_fcntl
+	 __readv
+	 __sched_getparam
+	 __libc_close
+	 __gethostname
+	 setup
+	 __bind
+	 __mprotect
+	 __socket
+	 __getpagesize
+	 __getegid
+	 __getdents
+	 __stat
+	 __libc_sendto
+	 __mkdir
+	 __libc_recv
+	 __sysinfo
+	 __libc_recvmsg
+	 __dup3
+	 __getgid
+	 __setitimer
+	 __libc_write
+	 __getsockopt
+	 exit
+	 __getcwd
