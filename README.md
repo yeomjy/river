@@ -35,6 +35,7 @@ Currently, we have 1 (binary execution) functional, while 0 (LLVM) is work in pr
 River is developed in the Department of Computer Science, University of Bucharest. [Ciprian Paduraru](mailto:ciprian.paduraru@fmi.unibuc.ro) is the lead developer. 
 
 Scientific publications related to River can be found below:
+- C. Paduraru, M. Paduraru, A. Stefanescu. [RiverFuzzRL — An Open-Source Tool to Experiment with Reinforcement Learning for Fuzzing](http://alin.stefanescu.eu/publications/pdf/icst21.pdf). In Proc. of 14th IEEE Conference on Software Testing, Verification and Validation (ICST'21), pp. 430-435, IEEE, 2021.
 - B. Ghimis, M. Paduraru, A. Stefanescu. [RIVER 2.0: An Open-Source Testing Framework using AI Techniques](http://alin.stefanescu.eu/publications/pdf/langeti20-river.pdf). In Proc. of LANGETI'20, workshop affiliated to ESEC/FSE'20, pp. 13-18, ACM, 2020.
 - C. Paduraru, M. Paduraru, A. Stefanescu. [Optimizing decision making in concolic execution using reinforcement learning](http://alin.stefanescu.eu/publications/pdf/amost20.pdf). In Proc. of A-MOST'20, workshop affiliated to ICST'20, pp. 52-61, IEEE, 2020.
 - C. Paduraru, B. Ghimis, A, Stefanescu. [RiverConc: An Open-source Concolic Execution Engine for x86 Binaries](http://alin.stefanescu.eu/publications/pdf/icsoft20-river-camera-ready.pdf). In Proc. of 15th Int. Conf on Software Technologies (ICSOFT'20), pp. 529-536, SciTePress, 2020.
