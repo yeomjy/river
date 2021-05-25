@@ -28,13 +28,14 @@ The architecture of River 3.0 is given below:
  1. Binary execution using Triton and LIEF 
 
 Currently, we have 1 (binary execution) functional, while 0 (LLVM) is work in progress.
-- It is **cross-platform running on all common OSs and support architectures: x86,x64,ARM32, ARM64**
+- It is **cross-platform running on all common OSs and support architectures: x86, x64, ARM32, ARM64**
 - River 3.0 will be a collection of tools that runs over the backend mentioned above. 
 
 ## Scientific Publications
 River is developed in the Department of Computer Science, University of Bucharest. [Ciprian Paduraru](mailto:ciprian.paduraru@fmi.unibuc.ro) is the lead developer. 
 
 Scientific publications related to River can be found below:
+- C. Paduraru, R. Cristea, E. Staniloiu. [RiverIoT - a Framework Proposal for Fuzzing IoT Applications](https://dl.dropbox.com/s/jduj2g1xe3bv4hb/serp4iot.pdf). To appear in 3rd Int. Workshop on Software Engineering Research & Practices for the Internet of Things (SERP4IoT'21), co-located with ICSE'21, 2021
 - C. Paduraru, M. Paduraru, A. Stefanescu. [RiverFuzzRL — An Open-Source Tool to Experiment with Reinforcement Learning for Fuzzing](http://alin.stefanescu.eu/publications/pdf/icst21.pdf). In Proc. of 14th IEEE Conference on Software Testing, Verification and Validation (ICST'21), pp. 430-435, IEEE, 2021.
 - B. Ghimis, M. Paduraru, A. Stefanescu. [RIVER 2.0: An Open-Source Testing Framework using AI Techniques](http://alin.stefanescu.eu/publications/pdf/langeti20-river.pdf). In Proc. of LANGETI'20, workshop affiliated to ESEC/FSE'20, pp. 13-18, ACM, 2020.
 - C. Paduraru, M. Paduraru, A. Stefanescu. [Optimizing decision making in concolic execution using reinforcement learning](http://alin.stefanescu.eu/publications/pdf/amost20.pdf). In Proc. of A-MOST'20, workshop affiliated to ICST'20, pp. 52-61, IEEE, 2020.
