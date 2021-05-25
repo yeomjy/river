@@ -228,4 +228,4 @@ $ make clean
  - Parallelization
  - We are going to convert the evaluation API to Google FuzzBench and Lava kind of benchmarks
 
-P.S. Please get in touch if you would like to collaborate on this exciting project! ^_^
+P.S. Please [get in touch](mailto:ciprian.paduraru@fmi.unibuc.ro) if you would like to collaborate on this exciting and humble project! ^_^
