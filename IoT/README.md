@@ -19,6 +19,9 @@ Project objectives are twofold:
 
 The main outcome will be an open-source software solution to test IoT (Internet-of-Things) applications in general, with a focus on smart home systems.
 
+The current state of the project can be easily tested using the `Dockerfile` provided in the project root.
+Detailed steps about how one can test the project are listed in the [Testing using docker](https://github.com/unibuc-cs/river#testing-using-docker) section.
+
 ## Current state of the project
 
 Details of the current work are provided in the following papers:
