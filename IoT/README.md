@@ -6,14 +6,7 @@ This a subproject of [River framework](https://river.cs.unibuc.ro) developing va
 
 The research teams collaborating in the project are from the University of Bucharest (team lead: Alin Stefanescu) and Politehnica University of Bucharest (team lead: Razvan Deaconescu).
 
-All the team members:
-- [Alin Stefanescu](http://alin.stefanescu.eu)
-- [Razvan Deaconescu](https://cs.pub.ro/index.php/people/userprofile/razvan_deaconescu)
-- Ciprian Paduraru
-- Rares Cristea
-- Eduard Staniloiu
-- Bogdan Ghimis
-- Andreia Ocanoaia
+All the team members: [Alin Stefanescu](http://alin.stefanescu.eu), [Razvan Deaconescu](https://cs.pub.ro/index.php/people/userprofile/razvan_deaconescu), Ciprian Paduraru, Rares Cristea, Eduard Staniloiu, Bogdan Ghimis, Andreia Ocanoaia
 
 ## Project
 
