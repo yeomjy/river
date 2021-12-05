@@ -22,7 +22,7 @@ Public details of the current work are provided in the following papers:
 
 - C. Paduraru, R. Cristea, E. Staniloiu. [RiverIoT - a Framework Proposal for Fuzzing IoT Applications](https://dl.dropbox.com/s/jduj2g1xe3bv4hb/serp4iot.pdf). To appear in the Proc. of 3rd Int. Workshop on Software Engineering Research & Practices for the Internet of Things (SERP4IoT'21), co-located with ICSE'21, IEEE, 2021
 - C. Paduraru, M. Paduraru, A. Stefanescu. [RiverFuzzRL — An Open-Source Tool to Experiment with Reinforcement Learning for Fuzzing](http://alin.stefanescu.eu/publications/pdf/icst21.pdf). In Proc. of 14th IEEE Conf. on Software Testing, Verification and Validation (ICST'21), pp. 430-435, IEEE, 2021.
-- E. Staniloiu, R. Cristea, B. Ghimis. [IoT Fuzzing using AGAPIA and the River Framework](https://dl.dropbox.com/s/fvxuvyaw7237nb1/icsoft21.pdf). To appear in Proc. of 16th Int. Conf. on Software Technologies (ICSOFT'21), 2021
+- E. Staniloiu, R. Cristea, B. Ghimis. [IoT Fuzzing using AGAPIA and the River Framework](https://dl.dropbox.com/s/fvxuvyaw7237nb1/icsoft21.pdf). In Proc. of 16th Int. Conf. on Software Technologies (ICSOFT'21), pp. 324-332, SciTePress, 2021.
 
 ## Future plans
 
