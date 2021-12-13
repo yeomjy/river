@@ -35,7 +35,7 @@ Currently, we have 1 (binary execution) functional, while 0 (LLVM) is work in pr
 River is developed in the Department of Computer Science, University of Bucharest. [Ciprian Paduraru](mailto:ciprian.paduraru@fmi.unibuc.ro) is the lead developer. 
 
 Scientific publications related to River can be found below:
-- C. Paduraru, R. Cristea, E. Staniloiu. [RiverIoT - a Framework Proposal for Fuzzing IoT Applications](https://dl.dropbox.com/s/jduj2g1xe3bv4hb/serp4iot.pdf). To appear in 3rd Int. Workshop on Software Engineering Research & Practices for the Internet of Things (SERP4IoT'21), co-located with ICSE'21, 2021
+- C. Paduraru, R. Cristea, E. Staniloiu. [RiverIoT - a Framework Proposal for Fuzzing IoT Applications](https://dl.dropbox.com/s/jduj2g1xe3bv4hb/serp4iot.pdf). In Proc. of 3rd Int. Workshop on Software Engineering Research & Practices for the Internet of Things (SERP4IoT'21), co-located with ICSE'21, pp. 52-58, IEEE, 2021
 - C. Paduraru, M. Paduraru, A. Stefanescu. [RiverFuzzRL — An Open-Source Tool to Experiment with Reinforcement Learning for Fuzzing](http://alin.stefanescu.eu/publications/pdf/icst21.pdf). In Proc. of 14th IEEE Conference on Software Testing, Verification and Validation (ICST'21), pp. 430-435, IEEE, 2021.
 - E. Staniloiu, R. Cristea, B. Ghimis. [IoT Fuzzing using AGAPIA and the River Framework](https://dl.dropbox.com/s/fvxuvyaw7237nb1/icsoft21.pdf). To appear in Proc. of 16th Int. Conf. on Software Technologies (ICSOFT'21), 2021
 - B. Ghimis, M. Paduraru, A. Stefanescu. [RIVER 2.0: An Open-Source Testing Framework using AI Techniques](http://alin.stefanescu.eu/publications/pdf/langeti20-river.pdf). In Proc. of LANGETI'20, workshop affiliated to ESEC/FSE'20, pp. 13-18, ACM, 2020.
