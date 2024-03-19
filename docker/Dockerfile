@@ -1,4 +1,4 @@
-FROM circleci/buildpack-deps:20.04
+FROM ubuntu:20.04
 ARG VERSION=unknown
 
 LABEL maintainer="eduard.c.staniloiu@gmail.com" \
@@ -10,13 +10,15 @@ WORKDIR /home/circleci
 ENV DEBIAN_FRONTEND="noninteractive"
 
 # Install missing packages and required dependencies
-RUN sudo apt-get update && \
-    sudo apt-get install -y wget vim ssh git python3 python3-pip \
+RUN apt-get update && \
+    apt-get install -y wget vim ssh git python3 python3-pip \
         libboost-all-dev libz3-dev cmake
 
 # Use pip to install latest capstone and lief libraries
-RUN pip3 install setuptools --upgrade && \
-    pip3 install capstone lief tensorflow
+RUN pip3 install setuptools --upgrade
+RUN pip3 install lief tensorflow
+RUN pip3 install capstone==4.0.2
+RUN pip3 install z3-solver
 
 # Clone River and it's submodules
 RUN git clone --recursive https://github.com/unibuc-cs/river
@@ -30,9 +32,15 @@ RUN ["/bin/bash", "-c", "cd /home/circleci/river/River3/ExternalTools/Triton && 
     CAPSTONE_INCLUDE_DIRS=${PYTHON_PACKAGES}/capstone/include/ \
     CAPSTONE_LIBRARIES=${PYTHON_PACKAGES}/capstone/lib/libcapstone.so \
     cmake .. && \
-    make -j2 && \
-    sudo make install && \
-    sudo ln -s ${PYTHON_PACKAGES}/capstone/lib/libcapstone.so ${PYTHON_PACKAGES}/capstone/lib/libcapstone.so.4"]
+    make -j12 && \
+    make install && \
+    ln -s ${PYTHON_PACKAGES}/capstone/lib/libcapstone.so ${PYTHON_PACKAGES}/capstone/lib/libcapstone.so.4"]
+
+RUN PYV=`python3 -c "import platform;print(platform.python_version()[:3])"` && \
+    PYP="/usr/lib/python$PYV/site-packages" && \
+    echo export PYTHONPATH="$PYP:\$PYTHONPATH" >> /etc/bash.bashrc && \
+    python3 -c "import z3; print('Z3 version:', z3.get_version_string())" && \
+    PYTHONPATH="$PYP" python3 -c "from triton import *; ctx=TritonContext(ARCH.X86_64);print(ctx)"
 
 # Run example test when container starts
 CMD cd /home/circleci/river/River3/TestPrograms && \

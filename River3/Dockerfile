@@ -7,9 +7,9 @@ RUN  apt-get update && \
 
 
 # cmake
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.18.4/cmake-3.18.4.tar.gz && \
-  tar -zxvf cmake-3.18.4.tar.gz && \
-  cd cmake-3.18.4 && \
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.20.1/cmake-3.20.1.tar.gz && \
+  tar -zxvf cmake-3.20.1.tar.gz && \
+  cd cmake-3.20.1 && \
   ./bootstrap && \
   make && \
   make install 
@@ -50,7 +50,8 @@ RUN apt-get update && \
   mkdir build && \
   cd build && \
   cmake .. && \
-  make -j2 install
+  make -j12 install
+
 
 # Install LIEF
 RUN python3.6 -m pip install setuptools --upgrade && \
@@ -64,5 +65,6 @@ RUN pip install --use-feature=2020-resolver numpy tensorflow
 COPY [".", "/River3"]
 WORKDIR /River3
 
-ENTRYPOINT [ "python3.6", "python/concolic_GenerationalSearch2.py"]
+
+# ENTRYPOINT [ "python3.6", "python/concolic_GenerationalSearch2.py"]
 # CMD ["--secondsBetweenStats", "2", "--architecture", "x64", "--maxLen", "1", "--outputType", "textual"]
