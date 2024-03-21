@@ -267,6 +267,12 @@ class RiverTracer:
 				size = phdr.physical_size
 				vaddr = phdr.virtual_address
 				logging.info('[+] Loading 0x%06x - 0x%06x' % (vaddr, vaddr + size))
+                print(tracerIndex)
+                print(tracer)
+                print(vaddr)
+                print(phdr)
+                print(phdr.content)
+                import ipdb; ipdb.set_trace()
 				tracersInstances[tracerIndex].context.setConcreteMemoryAreaValue(vaddr, phdr.content)
 				#assert False, "Check where is stack and heap and reset them "
 
